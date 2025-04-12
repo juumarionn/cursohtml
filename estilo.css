@@ -1,0 +1,38 @@
+/*estilização fora do código principal*/
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap'); /*get font, get embed code, import*/
+@import url('https://fonts.googleapis.com/css2?family=Winky+Rough:ital,wght@0,300..900;1,300..900&display=swap');
+
+*{
+font-family: "Caveat", cursive;
+}
+
+
+header{
+    background-color: #4A4F7C;
+    text-align: center;
+}
+
+.li-navbar{
+    list-style: none;
+    display: inline-block;
+}
+
+.li-navbar:hover{
+    color: green;
+    font-size: 20px;
+    font-family: "Winky Rough", sans-serif;
+}
+
+.p-navparagrafo{
+    font-size: 24px;
+}
+
+.introducao{
+    background-color: black;
+    color:bisque;
+}
+
+.desricao{
+    background-color: blueviolet;
+    color: white;
+}

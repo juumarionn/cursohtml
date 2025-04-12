@@ -1,29 +1,55 @@
 <!--https://developer.mozilla.org/pt-BR/docs/Web/CSS#livro_de_receitas-->
+<!--https://htmlcolorcodes.com/--> <!--site de # de cores em tudo que é jeito-->
+<!--https://fonts.google.com/--> <!--site de fontes em tudo que é jeito-->
 <!DOCTYPE html>
 
 <html>
     <head>
         <title>Aula 01</title>
-        <style>
+        <style> 
+            /*estilização dentro do código principal*/
             body{
-                background-color: #aca0b1;
-                text-align: center;
+                background: linear-gradient(to right, #bfd1a8, #9dc8d1); /*primeiro declarado é da direita e depois declarado da esquerda*/
+                /*background-color: #aca0b1;
+                text-align: center; */
             }
             p{
-                color: wheat;
+                color: yellow;
             }
 
             li{
-                color: wheat;
+                color: palevioletred;
                 text-align: left;
             }
         </style>
+        <link rel="stylesheet" href="estilo.css">
     </head>
 
     <body>
+        <header>
+            <p class="p-navparagrafo">Bem vindo</p>
+            <ul>
+                <li class="li-navbar">Home</li>
+                <li class="li-navbar">Sobre</li>
+                <li class="li-navbar">Contato</li>
+                <li class="li-navbar">Ajuda</li>
+            </ul>
+        </header>
+
+        <div class="introducao">
+            <h3>Introdução</h3>
+            <p class="p-intro">Parágrafo de introdução</p>
+        </div>
+
+        <div class="descricao">
+            <h3>Descrição</h3>
+            <p class="p-descricao">Parágrafo de descrição</p>
+        </div>
+
+
         <h1>Teste</h1>
         <p style="color: rgb(100, 88, 95);">Aula 01 do curso de programação</p> <!--prioridade-->   
-        <p> Cor diferemte</p>
+        <p> Cor diferente</p>
 
         <ul> <!--sem ordem-->
             <li>05/04/2025</li>
@@ -36,5 +62,50 @@
             <li>Aula 2</li>
             <li>Aula 3</li>
         </ol>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Idade</th>
+                    <th>Sexo</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>Maria</td>
+                    <td>25</td>
+                    <td>Feminino</td>
+                </tr>
+                <tr>
+                    <td>João</td>
+                    <td>30</td>
+                    <td>Masculino</td>
+                </tr>
+                <tr>
+                    <td>José</td>
+                    <td>37</td>
+                    <td>Masculino</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <dl>
+            <dt>Professor</dt>
+            <dd>Recebe pouco</dd>
+        </dl>
+
+        <dl>
+            <dt>Lista descritiva</dt>
+            <dd>
+                <ul>
+                    <li>A1</li>
+                    <li>A2</li>
+                    <li>A3</li>
+                </ul>
+            </dd>
+        </dl>
+    
     </body>
 </html>
