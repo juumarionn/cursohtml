@@ -21,6 +21,44 @@
                 color: palevioletred;
                 text-align: left;
             }
+
+            .container{
+                display: grid;
+                grid-template-areas:
+                "box1 box1"
+                "box2 box3"
+                "box4 box4";
+                gap: 10px;
+                background-color: lightslategray;
+            }
+
+            .box{
+                padding: 10px;
+                margin: 10px;
+                text-align: center;
+                font-size: 16px;
+            }
+
+            #box1{
+                grid-area: box1;
+                background-color: lightblue;
+                /*margin: 15px;*/
+            }
+
+            #box2{
+                grid-area: box2;
+                background-color: lightgreen;
+            }
+
+            #box3{
+                grid-area: box3;
+                background-color: lightcoral;
+            }
+
+            #box4{
+                grid-area: box4;
+                background-color: lightgoldenrodyellow;
+            }
         </style>
         <link rel="stylesheet" href="estilo.css">
     </head>
@@ -106,6 +144,13 @@
                 </ul>
             </dd>
         </dl>
-    
+
+
+        <div class = "container">
+            <div class="box" id="box1">Box 1</div>
+            <div class="box" id="box2">Box 2</div>
+            <div class="box" id="box3">Box 3</div>
+            <div class="box" id="box4">Box 4</div>
+        </div>
     </body>
 </html>
