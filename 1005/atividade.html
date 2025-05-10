@@ -1,0 +1,64 @@
+<!--atividade para criar uma tela juntando as caixas e os formularios-->
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>atividade</title>
+    <link rel="stylesheet" href="atividade.css">
+</head>
+<body>
+    <div class="main-container">
+        <div class="container" id="titulo">
+            <div class="box"><b>Formularios</b></div>
+        </div>
+
+        <div class="container" id="login">
+            <div class="box">
+                    <form>
+                        <label for="user"><b>Usuario</b></label>
+                        <input type="text" id="user" name="user" placeholder="Usuário" required><br>
+    
+                        <label for="password"><b>Senha:</b></label>
+                        <input type="password" id="password" name="password" placeholder="Senha" required><br>
+    
+                        <button type="submit"><b>Logar</b></button>
+                    </form>
+                </div>
+            </div>
+
+    <div class="container" id="formulario">
+        <div class="box" id="box1">
+            <form>
+                <label for="nome"><b>Nome:</b></label>
+                <input type="text" id="nome" name="nome" placeholder="Nome Completo" required> <!--tipo, id  e nome, respectivamente, de preferência, mas não tem ordem-->
+    
+                <label for="cpf"><b>CPF:</b></label>
+                <input type="text" id="cpf" name="cpf" placeholder="123.456.789-00" required>
+    
+                <label for="dataNasc">Data de Nascimento:</label>
+                <input type="date" id="dataNasc" name="dataNasc"> <!--o placeholder já é compitado pelo tipo date, não precis, se colocar vai ser inutil--> 
+    
+                <label for="idade">Idade:</label>
+                <input type="number" id="idade" name="idade" min="1" max="110"><br>
+
+                <button type="submit">Enviar</button><br>
+            </form>
+        </div>
+
+        <div class="box" id="box2">
+            <form>
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" placeholder="exemplo@exemplo.com"> 
+    
+                <label for="tel"><b>Telefone:</b></label>
+                <input type="tel" id="tel" name="tel" placeholder="(00) 99999-9999" required maxlength="11"><br>
+    
+                <button type="submit">Enviar</button><br> <!--submit recarrega a pagina inteira para enviar o formulario. Não é ele que faz o salvamento das informações, e sim o <form action> -->
+            </form>
+        </div>
+</div>
+</div>
+</body>
+</html>
