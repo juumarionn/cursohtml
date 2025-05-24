@@ -1,0 +1,40 @@
+*{
+    padding: 0;
+}
+
+body{
+    font-family: cursive;
+    background-color: antiquewhite;
+}
+
+form{
+     margin: auto; /*vai "calcular" o tamanho da tela e deixar no meio*/
+     max-width: 500px;
+}
+
+input, textarea{
+    width: 100%;
+    padding: 10px; /*é o espaço entre as linhas*/
+    border: 2px solid black;
+    border-radius: 25px; /*o campo de texto "redondinho"*/
+    font-size: 15px;
+}
+
+input:focus, textarea:focus{
+    border-color: aquamarine;
+    background-color: lightgreen;
+    outline: none;
+}
+
+button{
+    background-color: green;
+    color:blue;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+button:hover{
+    background-color: red;
+}
