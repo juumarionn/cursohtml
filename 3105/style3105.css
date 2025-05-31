@@ -1,0 +1,56 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    background-color: gainsboro;
+    font-family:'Courier New', Courier, monospace;
+    padding: 20px;
+    text-align: center;
+}
+
+.container{
+    background-color: beige;
+    padding: 50px;
+    margin: auto;
+    max-width: 600px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px black; /*eixo x e y, tem que ficar 0 para ele pegar exatamente onde a caixa esta*/
+}
+
+input{
+    padding: 10px;
+    margin: 5px;
+    width: 30%;
+    border-radius: 15px;
+}
+
+button{
+    padding: 10px 20px;
+    margin: 10px;
+    background-color: aquamarine;
+    color:blue;
+    border: none;
+    cursor: pointer;
+    border-radius: 15px;
+}
+
+table{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th, table td{
+    border: 1px solid yellow;
+    padding: 10px;
+}
+
+button.edit{
+    background-color: gold;
+}
+
+button.delete{
+    background-color: red;
+}
