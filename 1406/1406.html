@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Exemplo jQuery</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body{
+        font-family: Arial, sans-serif; 
+        padding: 30px;
+        background-color: blueviolet;
+    }
+    #mensagem{
+        color: blue; 
+        font-size: 20px; 
+        border: 1px solid white;
+    }
+
+    #entrada{
+        margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Atividade com jQuery</h1>
+  <p id="mensagem">Texto original</p>
+
+  <input type="text" id="entrada" placeholder="Digite algo aqui"><br><br>
+
+  <button id="botao">Clique aqui</button>
+
+  <script>
+    // clique simples
+    $("#botao").click(function() {
+        $("#mensagem").text("Você clicou no botão!").css("color", "black").fadeOut(500).fadeIn(500);
+    });
+
+    // clique duplo
+    $("#botao").dblclick(function() {
+        $("#mensagem").append(" (Você deu um duplo clique!) ").css("font-weight", "bold");
+    });
+
+    //mouse entra e sai de um elemnto na tela
+    $("#mensagem").mouseenter(function() {
+        $(this).css("background-color", "pink");
+    }).mouseleave(function() {
+        $(this).css("background-color", "white");
+    });
+
+    // append, prepend, before, after
+    $("#botao").click(function() {
+        $("#mensagem").append("<p> Adicionar append </p>"); // parte de baixo dentro da "caixa"
+        $("#mensagem").prepend("<p> Adicionar prepend </p>"); // parte de cima dentro da "caixa"
+        $("#mensagem").before("<p> Before - Texto antes e fora do meu elemento  </p>"); // parte de cima fora da "caixa"
+        $("#mensagem").after("<p> After - Texto antes e fora do meu elemento </p>"); // parte de baixo fora da "caixa"
+    });
+  </script>
+
+</body>
+</html>

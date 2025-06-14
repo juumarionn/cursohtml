@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Interativo</title>
+    <link rel="stylesheet" href="quiz.css">
+</head>
+<body>
+    <header>
+        <p class="p-navparagrafo">Bem vindo</p>
+        <ul>
+            <li class="li-navbar" onclick="showSection('home')">Home</li>
+            <li class="li-navbar" onclick="showSection('points')">Pontos</li>
+        </ul>
+    </header>
+
+
+    <section id="inicioQuiz">
+        <h1>Bem-vindo ao Quiz!</h1>
+        <button onclick="startQuiz()">Iniciar Quiz</button>
+    </section>
+
+    <section id="quiz-section" style="display: none;" class="quiz-container">
+        <div style="width: 100%;">
+
+        <h1>Quiz</h1>
+
+        <div id="quiz">
+            <div id="question-display"></div>
+            <button id="next-question">Próxima Pergunta</button>
+        </div>
+
+        <div id="results" class="results"></div>
+
+        <button id="returnHome" style="display: none;" onclick="returnHome()">Voltar para o inicio</button>
+        </div>
+    </section>
+
+
+    <section id="points-section" style="display: none;">
+        <h1>Última Pontuação</h1>
+        <p id="last-score">Nenhum resultado ainda.</p>
+    </section>
+    
+
+    <script src="quiz.js"></script>
+</body>
+</html>
