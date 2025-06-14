@@ -38,7 +38,6 @@ button {
     color: rgb(37, 8, 8);
     border-radius: 5px;
     margin: 10px;
-
     display: flex;
     margin: auto;
 }
@@ -52,29 +51,37 @@ h1 {
     color: #333;
 }
 
-#question-display {
+#pergunta-aqui { 
     margin-bottom: 20px;
 }
 
-#question-display p {
+#pergunta-aqui p {
     font-weight: bold;
     margin-bottom: 10px;
 }
 
-#question-display .answers label {
+#pergunta-aqui .respostas label {
     display: block;
     margin-bottom: 8px;
 }
 
-#question-display .answers input[type="radio"] {
+#pergunta-aqui .respostas input[type="radio"] {
     margin-right: 10px;
 }
 
-.results {
+#resultado-aqui {
     margin-top: 30px;
     text-align: center;
     font-size: 1.2em;
     font-weight: bold;
     color: #333;
     display: none;
+}
+
+.tela-quiz {
+    display: none;
+}
+
+#inicio {
+    display: block;
 }

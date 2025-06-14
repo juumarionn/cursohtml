@@ -1,165 +1,113 @@
-const quizData = [
+const perguntasQuiz = [
     {
-        question: "Qual é a capital do Brasil?",
-        answers: {
-            a: "Rio de Janeiro",
-            b: "São Paulo",
-            c: "Brasília",
-            d: "Belo Horizonte"
-        },
-        correct: "c"
+        pergunta: "Qual é a capital do Brasil?",
+        opcoes: { a: "Rio de Janeiro", b: "São Paulo", c: "Brasília", d: "Belo Horizonte" },
+        correta: "c"
     },
     {
-        question: "Quantos planetas existem no nosso Sistema Solar?",
-        answers: {
-            a: "7",
-            b: "8",
-            c: "9",
-            d: "10"
-        },
-        correct: "b"
+        pergunta: "Quantos planetas existem no nosso Sistema Solar?",
+        opcoes: { a: "7", b: "8", c: "9", d: "10" },
+        correta: "b"
     },
     {
-        question: "Quem pintou a Mona Lisa?",
-        answers: {
-            a: "Vincent van Gogh",
-            b: "Pablo Picasso",
-            c: "Leonardo da Vinci",
-            d: "Michelangelo"
-        },
-        correct: "c"
+        pergunta: "Quem pintou a Mona Lisa?",
+        opcoes: { a: "Vincent van Gogh", b: "Pablo Picasso", c: "Leonardo da Vinci", d: "Michelangelo" },
+        correta: "c"
     }
 ];
 
-const questionDisplay = document.getElementById('question-display');
-const nextButton = document.getElementById('next-question');
-const resultsContainer = document.getElementById('results');
+const Perg = document.getElementById('pergunta-aqui');
+const BotaoProx = document.getElementById('botao-prox');
+const Result = document.getElementById('resultado-aqui');
+const UltPont = document.getElementById('ultima-pontuacao');
+const BotaoVoltar = document.getElementById('botao-voltar');
 
-let currentQuestionIndex = 0;
-let userAnswers = []; // Para armazenar as respostas do usuário
+let int = 0;
+let usuario = [];
 
-function displayQuestion() {
-    // Esconde os resultados se estiverem visíveis
-    resultsContainer.style.display = 'none';
-    nextButton.style.display = 'block'; // Garante que o botão esteja visível
+function mostrarPerg() {
+    Result.style.display = 'none';
+    BotaoProx.style.display = 'block';
+    BotaoVoltar.style.display = 'none';
 
-    if (currentQuestionIndex < quizData.length) {
-        const currentQuestion = quizData[currentQuestionIndex];
-        const answersHtml = Object.keys(currentQuestion.answers)
-            .map(letter => `
+    if (int < perguntasQuiz.length) {
+        const pAtual = perguntasQuiz[int];
+        const htmlOpts = Object.keys(pAtual.opcoes)
+            .map(l => `
                 <label>
-                    <input type="radio" name="question" value="${letter}">
-                    ${letter} :
-                    ${currentQuestion.answers[letter]}
+                    <input type="radio" name="resposta" value="${l}">
+                    ${l} : ${pAtual.opcoes[l]}
                 </label>
             `).join('');
 
-        questionDisplay.innerHTML = `
-            <p>${currentQuestion.question}</p>
-            <div class="answers">${answersHtml}</div>
+        Perg.innerHTML = `
+            <p>${pAtual.pergunta}</p>
+            <div class="respostas">${htmlOpts}</div>
         `;
 
-        // Altera o texto do botão para "Ver Resultados" na última pergunta
-        if (currentQuestionIndex === quizData.length - 1) {
-            nextButton.textContent = "Finalizar";
-        } else {
-            nextButton.textContent = "Próxima Pergunta";
-        }
-
+        BotaoProx.textContent = 
+            (int === perguntasQuiz.length - 1) ? "Finalizar" : "Próxima";
     } else {
-        // Todas as perguntas foram respondidas, mostra os resultados
-        showResults();
+        mostrarResult();
     }
 }
 
-function saveAnswerAndProceed() {
-    const selectedOption = document.querySelector('input[name="question"]:checked');
-
-    if (selectedOption) {
-        userAnswers[currentQuestionIndex] = selectedOption.value; // Salva a resposta
-        currentQuestionIndex++;
-        displayQuestion(); // Exibe a próxima pergunta ou resultados
+function avQuiz() {
+    const optSel = document.querySelector('input[name="resposta"]:checked');
+    if (optSel) {
+        usuario[int] = optSel.value;
+        int++;
+        mostrarPerg();
     } else {
-        alert("Por favor, selecione uma opção antes de prosseguir!");
+        alert("Escolha uma opção antes de continuar!");
     }
 }
 
-function showResults() {
-    let numCorrect = 0;
-
-    quizData.forEach((question, index) => {
-        if (userAnswers[index] === question.correct) {
-            numCorrect++;
+function mostrarResult() {
+    let acertos = 0;
+    perguntasQuiz.forEach((p, i) => {
+        if (usuario[i] === p.correta) {
+            acertos++;
         }
     });
 
-    questionDisplay.innerHTML = ''; // Limpa a pergunta
-    nextButton.style.display = 'none'; // Esconde o botão
-    resultsContainer.innerHTML = `Você acertou ${numCorrect} de ${quizData.length} perguntas!`;
-    resultsContainer.style.display = 'block'; // Mostra os resultados
+    const pct = ((acertos / perguntasQuiz.length) * 100).toFixed(2);
+    const textoF = `Você acertou ${acertos} de ${perguntasQuiz.length} perguntas (${pct}%)!`;
+
+    Perg.innerHTML = '';
+    BotaoProx.style.display = 'none';
+    Result.innerHTML = textoF;
+    Result.style.display = 'block';
+
+    localStorage.setItem('ultimaPontuacaoQuiz', textoF);
+    BotaoVoltar.style.display = 'block';
 }
 
-// Adiciona um listener ao botão "Próxima Pergunta"
-nextButton.addEventListener('click', saveAnswerAndProceed);
+function Tela(tela) {
+    document.querySelectorAll('.tela-quiz').forEach(sec => {
+        sec.style.display = 'none';
+    });
 
-// Seleção de seções
-const homeSection = document.getElementById('inicioQuiz');
-const quizSection = document.getElementById('quiz-section');
-const pointsSection = document.getElementById('points-section');
-const lastScoreDisplay = document.getElementById('last-score');
-
-function showSection(section) {
-    homeSection.style.display = 'none';
-    quizSection.style.display = 'none';
-    pointsSection.style.display = 'none';
-
-    if (section === 'home') {
-        homeSection.style.display = 'block';
-    } else if (section === 'quiz') {
-        quizSection.style.display = 'flex';
-    } else if (section === 'points') {
-        pointsSection.style.display = 'block';
-        const lastScore = localStorage.getItem('lastScore');
-        if (lastScore) {
-            lastScoreDisplay.textContent = lastScore;
-        } else {
-            lastScoreDisplay.textContent = "Nenhum resultado ainda.";
-        }
+    if (tela === 'inicio') {
+        document.getElementById('inicio').style.display = 'block';
+    } else if (tela === 'quiz') {
+        document.getElementById('quiz').style.display = 'flex';
+    } else if (tela === 'pontos') {
+        document.getElementById('pontos').style.display = 'block';
+        const pontSalva = localStorage.getItem('ultimaPontuacaoQuiz');
+        UltPont.textContent = pontSalva || "Nenhum resultado ainda.";
     }
 }
 
-function startQuiz() {
-    currentQuestionIndex = 0;
-    userAnswers = [];
-    showSection('quiz');
-    displayQuestion();
+function iniQuiz() {
+    int = 0;
+    usuario = [];
+    Tela('quiz');
+    mostrarPerg();
 }
 
-function showResults() {
-    let numCorrect = 0;
+BotaoProx.addEventListener('click', avQuiz);
 
-    quizData.forEach((question, index) => {
-        if (userAnswers[index] === question.correct) {
-            numCorrect++;
-        }
-    });
-
-    const percentage = ((numCorrect / quizData.length) * 100).toFixed(2);
-    const resultText = `Você acertou ${numCorrect} de ${quizData.length} perguntas (${percentage}%)!`;
-
-    questionDisplay.innerHTML = '';
-    nextButton.style.display = 'none';
-    resultsContainer.innerHTML = resultText;
-    resultsContainer.style.display = 'block';
-
-    localStorage.setItem('lastScore', resultText);
-
-    // Exibe botão para voltar para a home
-    document.getElementById('returnHome').style.display = 'block';
-}
-
-function returnHome() {
-    showSection('home');
-    document.getElementById('returnHome').style.display = 'none';
-    resultsContainer.style.display = 'none';
-}
+document.addEventListener('DOMContentLoaded', () => {
+    Tela('inicio'); 
+});
