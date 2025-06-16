@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt--br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinema Senai</title>
+
+    <link rel="stylesheet" href="cinema.css">
+</head>
+<body>
+    <header>
+        <p class="p-navparagrafo">Cinema Senai</p>
+            <ul>
+                <li class="li-navbar" onclick="Tela('home')">Home</li>
+                <li class="li-navbar" onclick="Tela('area')">Area</li>
+            </ul>
+    </header>
+
+    <section id="home">
+    <div style="padding: 20px;">
+        <h2>Buscar Filme ou Série</h2>
+        <input type="text" id="inputBusca" placeholder="Digite o nome do filme ou série">
+        
+        <select id="filtroTipo">
+            <option value="todos">Todos</option>
+            <option value="filme">Filmes</option>
+            <option value="serie">Séries</option>
+        </select>
+
+        <button onclick="buscar()">Buscar</button>
+    </div>
+
+    <div id="resultado" style="padding: 20px;">
+        <!-- Resultados aparecem aqui -->
+    </div>
+    </section>
+
+</body>
+</html>
