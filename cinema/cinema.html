@@ -1,39 +1,80 @@
 <!DOCTYPE html>
-<html lang="pt--br">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cinema Senai</title>
-
     <link rel="stylesheet" href="cinema.css">
 </head>
 <body>
-    <header>
-        <p class="p-navparagrafo">Cinema Senai</p>
-            <ul>
-                <li class="li-navbar" onclick="Tela('home')">Home</li>
-                <li class="li-navbar" onclick="Tela('area')">Area</li>
-            </ul>
-    </header>
 
-    <section id="home">
-    <div style="padding: 20px;">
+<header>
+    <p class="p-navparagrafo">Cinema Senai</p>
+    <ul>
+        <li class="li-navbar" onclick="Tela('home')">Home</li>
+        <li class="li-navbar" onclick="Tela('area')">Área</li>
+    </ul>
+</header>
+
+<section id="home">
+    <div class="busca-container">
         <h2>Buscar Filme ou Série</h2>
-        <input type="text" id="inputBusca" placeholder="Digite o nome do filme ou série">
-        
+        <input type="text" id="inputBusca" placeholder="Digite o nome">
         <select id="filtroTipo">
             <option value="todos">Todos</option>
             <option value="filme">Filmes</option>
             <option value="serie">Séries</option>
         </select>
-
         <button onclick="buscar()">Buscar</button>
+        <button onclick="limparBusca()">Limpar</button>
     </div>
 
-    <div id="resultado" style="padding: 20px;">
-        <!-- Resultados aparecem aqui -->
-    </div>
-    </section>
+    <div id="resultado" class="resultado-container"></div>
+</section>
 
+<!-- Modal de Detalhes -->
+<div id="modalDetalhes" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="fecharModal()">&times;</span>
+        <div id="conteudoModal"></div>
+    </div>
+</div>
+
+<!-- Modal de Cadastro -->
+<div id="modalCadastro" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="fecharModalCadastro()">&times;</span>
+        <h2>Cadastrar Filme ou Série</h2>
+        <input type="text" id="cadTipo" placeholder="Tipo (filme ou serie)">
+        <input type="text" id="cadNome" placeholder="Título">
+        <input type="text" id="cadGenero" placeholder="Gênero">
+        <input type="number" id="cadAno" placeholder="Ano">
+        <input type="text" id="cadDuracao" placeholder="Duração (ex: 2h)">
+        <input type="number" id="cadAvaliacao" placeholder="Avaliação (1 a 5)">
+        <input type="text" id="cadImagem" placeholder="URL da imagem">
+        <button onclick="salvarCadastro()">Salvar</button>
+    </div>
+</div>
+
+<section id="area" style="display:none">
+    <div class="login-container" id="loginContainer">
+        <h2>Login</h2>
+        <input type="text" id="usuario" placeholder="Usuário">
+        <input type="password" id="senha" placeholder="Senha">
+        <select id="tipoUsuario">
+            <option value="recepcionista">Recepcionista</option>
+            <option value="produtor">Produtor</option>
+            <option value="cinematografista">Cinematografista</option>
+        </select>
+        <button onclick="login()">Entrar</button>
+    </div>
+
+    <div id="areaLogada" style="display:none">
+        <h2>Bem-vindo(a), <span id="userTipo"></span></h2>
+        <button onclick="abrirCadastro()">Cadastrar Novo</button>
+    </div>
+</section>
+
+<script src="cinema.js"></script>
 </body>
 </html>
