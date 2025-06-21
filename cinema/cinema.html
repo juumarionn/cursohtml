@@ -16,64 +16,74 @@
     </ul>
 </header>
 
-<section id="home">
-    <div class="busca-container">
-        <h2>Buscar Filme ou Série</h2>
-        <input type="text" id="inputBusca" placeholder="Digite o nome">
-        <select id="filtroTipo">
+<!-- Tela Home -->
+<div id="home" class="container">
+    <div class="box">
+        <input type="text" id="boxPesquisar" placeholder="Pesquise aqui">
+    </div>
+
+    <div class="box">
+        <select id="boxFiltrar">
             <option value="todos">Todos</option>
-            <option value="filme">Filmes</option>
-            <option value="serie">Séries</option>
+            <option value="filme">Filme</option>
+            <option value="serie">Série</option>
         </select>
-        <button onclick="buscar()">Buscar</button>
-        <button onclick="limparBusca()">Limpar</button>
     </div>
 
-    <div id="resultado" class="resultado-container"></div>
-</section>
+    <div class="box">
+        <button id="boxBuscar">Buscar</button>
+    </div>
 
-<!-- Modal de Detalhes -->
-<div id="modalDetalhes" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="fecharModal()">&times;</span>
-        <div id="conteudoModal"></div>
+    <div class="box">
+        <button id="boxLimpar">Limpar</button>
+    </div>
+
+    <div id="resultado"></div> <!-- Onde os resultados vão ser mostrados -->
+</div>
+
+<!-- Tela de Área -->
+<div id="area" style="display: none;">
+    <h2>Área de Login</h2>
+    <div id="loginArea">
+        <input type="text" id="loginUser" placeholder="Usuário">
+        <input type="password" id="loginPass" placeholder="Senha">
+        <button id="loginBtn">Entrar</button>
+    </div>
+
+    <div id="adminArea" style="display: none;">
+        <h3>Bem-vindo, Funcionario!</h3>
+        <div id="adminOptions">
+            <button id="btnCadastrarNovo">Cadastrar Novo</button>
+        </div>
+        <div id="adminResults"></div>
     </div>
 </div>
 
-<!-- Modal de Cadastro -->
-<div id="modalCadastro" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="fecharModalCadastro()">&times;</span>
-        <h2>Cadastrar Filme ou Série</h2>
-        <input type="text" id="cadTipo" placeholder="Tipo (filme ou serie)">
-        <input type="text" id="cadNome" placeholder="Título">
-        <input type="text" id="cadGenero" placeholder="Gênero">
-        <input type="number" id="cadAno" placeholder="Ano">
-        <input type="text" id="cadDuracao" placeholder="Duração (ex: 2h)">
-        <input type="number" id="cadAvaliacao" placeholder="Avaliação (1 a 5)">
-        <input type="text" id="cadImagem" placeholder="URL da imagem">
-        <button onclick="salvarCadastro()">Salvar</button>
-    </div>
+<!-- Tela de Detalhes de Mídia -->
+<div id="detalhes" style="display: none;">
+    <h2>Detalhes da Mídia</h2>
+    <div id="detalhesInfo"></div>
+    <button id="fecharDetalhes">Fechar</button>
 </div>
 
-<section id="area" style="display:none">
-    <div class="login-container" id="loginContainer">
-        <h2>Login</h2>
-        <input type="text" id="usuario" placeholder="Usuário">
-        <input type="password" id="senha" placeholder="Senha">
-        <select id="tipoUsuario">
-            <option value="recepcionista">Recepcionista</option>
-            <option value="produtor">Produtor</option>
-            <option value="cinematografista">Cinematografista</option>
+<!-- Formulário para Cadastro de Novo Filme/Série -->
+<div id="formulario" style="display: none;">
+    <h2>Cadastrar Novo Filme/Série</h2>
+    <form id="formCadastrar">
+        <input type="text" id="nomeMidia" placeholder="Nome" required>
+        <select id="tipoMidia">
+            <option value="filme">Filme</option>
+            <option value="serie">Série</option>
         </select>
-        <button onclick="login()">Entrar</button>
-    </div>
-
-    <div id="areaLogada" style="display:none">
-        <h2>Bem-vindo(a), <span id="userTipo"></span></h2>
-        <button onclick="abrirCadastro()">Cadastrar Novo</button>
-    </div>
-</section>
+        <input type="text" id="generoMidia" placeholder="Gênero" required>
+        <input type="number" id="anoMidia" placeholder="Ano" required>
+        <input type="text" id="duracaoMidia" placeholder="Duração" required>
+        <input type="text" id="avaliacaoMidia" placeholder="Avaliação" required>
+        <input type="text" id="imagemMidia" placeholder="Imagem (URL)" required>
+        <button type="submit">Cadastrar</button>
+    </form>
+    <button id="fecharForm">Fechar</button>
+</div>
 
 <script src="cinema.js"></script>
 </body>

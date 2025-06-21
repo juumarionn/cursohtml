@@ -1,81 +1,148 @@
-*{
+/* Reseta o estilo padrão */
+* {
     margin: 0;
     box-sizing: border-box;
 }
-header{
+
+/* Estilo do header */
+header {
     background-color: black;
     color: white;
     display: flex;
-    width: 100%;
+    justify-content: space-between;
+    padding: 10px 20px;
+    align-items: center;
 }
 
-p{
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    margin: 20px;
-    font-size: 20px;
+.p-navparagrafo {
+    font-size: 24px;
+    font-weight: bold;
 }
 
 ul {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
+    list-style-type: none;
 }
 
-.li-navbar{
-    display: inline;
-    margin: 50PX;
+.li-navbar {
+    margin: 0 15px;
+    cursor: pointer;
+    padding: 10px;
 }
 
-.li-navbar:hover{
+.li-navbar:hover {
     color: rgb(192, 190, 190);
     font-size: 18px;
 }
 
-body{
+/* Estilo geral da página */
+body {
     background-color: brown;
+    font-family: Arial, sans-serif;
 }
 
-/* Posicionamento dos botões na busca */
-.busca-container button {
-    margin-left: 5px;
+/* Container de Mídias */
+.container {
+    width: 80%;
+    margin: 20px auto;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
 }
 
-/* Modal de Cadastro reaproveita o mesmo estilo do de Detalhes */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.7);
-}
-
-.modal-content {
-    background-color: white;
-    margin: 8% auto;
-    padding: 20px;
-    width: 400px;
-    border-radius: 12px;
-    position: relative;
+/* Caixas de Mídia */
+.box {
+    padding: 10px;
+    margin: 10px;
     text-align: center;
+    font-size: 16px;
+    display: inline-block;
+    width: 100%;
+    max-width: 200px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
 }
 
-.modal-content input {
-    width: 90%;
-    padding: 8px;
-    margin: 5px 0;
+button {
+    cursor: pointer;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Resultados das buscas (estilo das caixas de mídia) */
+#resultado {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 20px;
+}
+
+.media-item {
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 15px;
     border-radius: 8px;
+    width: 200px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#resultado img {
+    width: 100%;
+    max-height: 150px;
+    border-radius: 8px;
+}
+
+/* Tela de Detalhes */
+#detalhes {
+    display: none;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 20px auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Formulário de Cadastro */
+#formulario {
+    display: none;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 20px auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#formulario input, #formulario select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
     border: 1px solid #ccc;
 }
 
-.close {
-    color: red;
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 30px;
-    cursor: pointer;
+/* Área de Login */
+#loginArea {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#adminArea {
+    display: none;
+    margin-top: 20px;
+}
+
+#adminOptions {
+    margin-bottom: 20px;
 }
