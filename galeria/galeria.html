@@ -1,45 +1,32 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Galeria de Filmes</title>
-  <link rel="stylesheet" href="galeria.css" />
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galeria</title>
+  <link rel="stylesheet" href="galeria.css">
 </head>
 <body>
   <header>
-    <h1>🎬 Galeria de Filmes</h1>
-    <input type="text" id="search" placeholder="Buscar por título..." />
-    <div class="menu">
-      <div class="hamburger">&#9776;</div>
-      <div class="menu-content">
-        <button class="filter-btn" data-genre="todos">Todos</button>
-        <button class="filter-btn" data-genre="acao">Ação</button>
-        <button class="filter-btn" data-genre="comedia">Comédia</button>
-        <button class="filter-btn" data-genre="drama">Drama</button>
-      </div>
-    </div>
+      <p class="p-navparagrafo">Galeria Senai</p>
+    <ul>
+      <li class="li-navbar" onclick="Tela('home')">Home</li>
+      <li class="li-navbar" onclick="Tela('login')">Login</li>
+    </ul>
   </header>
 
-  <main id="gallery" class="grid-container"></main>
-
-  <div id="popup" class="popup">
-    <div class="popup-content">
-      <span id="fecharPopup" class="fechar">&times;</span>
-      <h2 id="tituloPopup"></h2>
-      <img id="posterPopup" src="" alt="Poster" />
-      <p><strong>Ano:</strong> <span id="anoPopup"></span></p>
-      <p><strong>Duração:</strong> <span id="duracaoPopup"></span></p>
-      <p><strong>Elenco:</strong> <span id="elencoPopup"></span></p>
-      <p><strong>Avaliação:</strong> <span id="avaliacaoPopup"></span></p>
-      <p id="descricaoPopup"></p>
-      <button id="fecharPopup2">Fechar</button>
-    </div>
+  <div class="carousel-container">
+  <div class="carousel-slide">
+    <div class="carousel-item">Novidade 1</div>
+    <div class="carousel-item">Novidade 2</div>
+    <div class="carousel-item">Novidade 3</div>
+    <div class="carousel-item">Novidade 4</div>
   </div>
+</div>
 
-  <script src="galeria.js"></script>
+<button onclick="prevSlide()">Seguinte</button>
+<button onclick="nextSlide()">Anterior</button>
+  
+<script src="galeria.js"></script>
 </body>
 </html>
-
-
