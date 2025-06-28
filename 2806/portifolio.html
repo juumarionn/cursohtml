@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfólio Julia</title>
+</head>
+<link rel="stylesheet" href="portifolio.css">
+<body>
+
+  <header>
+    <h1>Portfólio de Julia</h1>
+    <nav>
+      <a href="#sobre">Sobre mim</a>
+      <a href="#projetos">Projetos</a>
+      <a href="#contato">Contato</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="sobre">
+      <h2>Sobre mim</h2>
+      <p>Olá! Meu nome é <span>Julia Marion</span>. Sou estudante do ultimo ano do ensino medio e formada em desenvolvimento de sistema e estudante de programação web apaixonada por <b>tecnologia</b> e <i>design</i>. Aqui você pode conhecer um pouco do meu trabalho.</p>
+      <p>Sou apaixonada por <ins>novas tecnologias</ins> e aprender sempre.</p>
+      <img src="https://th.bing.com/th/id/OIP.AqTsQZmSDGycvP5aeMEvBwHaE8?w=264&h=180&c=7&r=0&o=7&pid=1.7&rm=3" alt="Foto da Julia" />
+    </section>
+
+    <section id="projetos">
+      <h2>Meus Projetos</h2>
+
+      <h3>Listas de projetos e etapas</h3>
+    <div class="boxG">
+  <div class="box">
+    <h4>Lista de projetos</h4>
+    <ul>
+      <li>Site de tarefas</li>
+      <li>App de verificação de notas estudantis</li>
+      <li>Site e App para desenvolvimento de literaturas com conexão entre leitor e autor</li>
+    </ul>
+  </div>
+
+  <div class="box">
+    <h4>Passos para um projeto</h4>
+    <ol>
+      <li><b>Planejamento</b> <p>Seja ele com papel e caneta para formatar o foco no resultado final</p></li>
+      <li><b>Desenvolvimento</b> <p>Programar, e não se frustar se algo precisar mudar</p></li>
+      <li><b>Testes</b> <p>Momento de ultimos ajustes para a entrega</p></li>
+      <li><b>Entrega</b> <p>Momento de utilização final</p></li>
+      <li><b>Verificação</b> <p>Atualizações para melhoria do código</p></li>
+    </ol>
+  </div>
+</div>
+
+<h3>Formação</h3>
+      <dl>
+        <dt>Senai</dt>
+        <dd>Desenvolvimento de sistemas <b>Concluido</b></dd>
+        <dd>Programaçao Web <b>Em andamento</b></dd>
+
+        <dt>Elite</dt>
+        <dd>Ensino medio <b>Em andamento</b></dd>
+      </dl>
+
+
+      <h3>Tabela de habilidades</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Habilidade</th>
+            <th>Nível</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>HTML</td>
+            <td>Intermediário</td>
+          </tr>
+          <tr>
+            <td>CSS</td>
+            <td>Intermediário</td>
+          </tr>
+          <tr>
+            <td>JavaScript</td>
+            <td>Intermediário</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="contato">
+      <h2>Contato</h2>
+      <form id="formContato">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" placeholder="Seu nome" required />
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="seu@email.com" required />
+
+        <label for="mensagem">Mensagem:</label>
+        <textarea id="mensagem" name="mensagem" rows="5" placeholder="Escreva sua mensagem..." required></textarea>
+
+        <button type="submit">Enviar</button>
+      </form>
+      <p id="msgStatus"></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>By Julia 2025 - Todos os direitos reservados.</p>
+  </footer>
+
+  <script src="portifolio.js"></script>
+</body>
+</html>

@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Galeria Senai</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -10,7 +12,6 @@
       font-family: Arial, sans-serif;
       background-color: #f4f4f4;
     }
-
     header {
       background-color: #222;
       color: white;
@@ -18,104 +19,170 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
     }
-
-    header h1 { margin: 0; }
-
     nav a {
       color: white;
       margin-left: 20px;
       text-decoration: none;
       font-weight: bold;
+      cursor: pointer;
     }
-
     .carrossel-container {
       position: relative;
-      overflow: hidden;
       width: 100%;
-      max-width: 100%;
-      margin: 20px auto;
+      overflow: hidden;
+      height: 300px;
+      margin-bottom: 20px;
     }
-
+    
     .carrossel {
       display: flex;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      gap: 20px;
-      padding: 20px;
-      scroll-snap-type: x mandatory;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.5s ease;
     }
-
+    
     .carrossel img {
-      height: 200px;
-      border-radius: 8px;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       flex-shrink: 0;
-      scroll-snap-align: center;
+      border-radius: 10px;
     }
-
+    
+    .carrossel img.selecionado {
+      transform: scale(1.1);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      border: 3px solid #3498db;
+      z-index: 1;
+    }
     .carrossel-btn {
       position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 40px;
-      background: rgba(0, 0, 0, 0.5);
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0, 0, 0, 0.5);
       color: white;
       font-size: 24px;
+      padding: 10px;
       border: none;
       cursor: pointer;
       z-index: 10;
+      user-select: none;
     }
-
-    .carrossel-btn.left { left: 0; }
-    .carrossel-btn.right { right: 0; }
-
-    .filtros, .login-area, .add-filme {
+    .carrossel-btn.left { left: 10px; }
+    .carrossel-btn.right { right: 10px; }
+    .filtros {
       display: flex;
       flex-wrap: wrap;
-      align-items: center;
       gap: 10px;
       padding: 0 20px 20px;
     }
-
     input, select, button {
       padding: 8px;
       font-size: 16px;
     }
-
     .galeria {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 20px;
-      padding: 0 20px 20px;
+      padding: 0 20px 40px;
     }
-
     .filme-box {
       background: white;
       padding: 10px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      width: 200px;
       text-align: center;
+      transition: transform 0.2s;
+      cursor: default;
     }
-
+    .filme-box:hover {
+      transform: translateY(-5px);
+    }
     .filme-box img {
       width: 100%;
       height: 250px;
       object-fit: cover;
       border-radius: 6px;
     }
-
     .avaliacao {
       font-weight: bold;
       padding: 4px;
       border-radius: 4px;
       display: inline-block;
     }
-
     .verde { color: green; }
     .laranja { color: orange; }
     .vermelho { color: red; }
 
+    .btn-adicionar {
+      margin: 10px 20px;
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 6px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      transition: background-color 0.3s;
+    }
+    .btn-adicionar:hover {
+      background-color: #2980b9;
+    }
+    label {
+      display: block;
+      margin: 12px 0 5px;
+      font-weight: bold;
+    }
+    input[type=text], input[type=number], select, textarea {
+      width: 100%;
+      padding: 8px;
+      font-size: 15px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    textarea {
+      resize: vertical;
+    }
+
+    /* Ocultar carrossel quando logado */
+    .carrossel-container.oculto {
+      display: none;
+    }
+
+    /* Paginas ocultas inicialmente */
+    #loginPage, #addMoviePage {
+      display: none;
+      padding: 20px;
+    }
+
+    /* Layout botões editar e excluir */
+    .filme-box button {
+      margin: 5px 8px 0 8px;
+      padding: 6px 14px;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 5px;
+      border: none;
+      color: white;
+      transition: background-color 0.3s;
+    }
+    .editar-filme {
+      background-color: #2980b9;
+    }
+    .editar-filme:hover {
+      background-color: #1c5d8b;
+    }
+    .excluir-filme {
+      background-color: #e74c3c;
+    }
+    .excluir-filme:hover {
+      background-color: #b93a2b;
+    }
+
+    /* Popup detalhes filme */
     .popup {
       position: fixed;
       top: 0; left: 0;
@@ -124,13 +191,33 @@
       display: none;
       justify-content: center;
       align-items: center;
+      z-index: 1000;
     }
-
     .popup-content {
       background: white;
       padding: 20px;
       border-radius: 10px;
       max-width: 400px;
+      width: 90%;
+      box-sizing: border-box;
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .popup-content img {
+      width: 100%;
+      margin-top: 10px;
+      border-radius: 6px;
+    }
+    .popup-content button.close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: transparent;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #333;
     }
   </style>
 </head>
@@ -139,193 +226,426 @@
 <header>
   <h1>Galeria Senai</h1>
   <nav>
-    <a href="#">Home</a>
-    <a href="#" onclick="toggleLogin()">Login</a>
+    <a id="linkHome" style="display:none; cursor:pointer;">Home</a>
+    <a id="linkLogin">Login</a>
+    <a id="linkLogout" style="display:none; cursor:pointer;">Logout</a>
   </nav>
 </header>
 
-<div class="carrossel-container">
-  <button class="carrossel-btn left" onclick="scrollCarrossel(-1)">❮</button>
-  <div class="carrossel" id="carrossel"></div>
-  <button class="carrossel-btn right" onclick="scrollCarrossel(1)">❯</button>
+<!-- HOME -->
+<div id="homePage">
+  <div class="carrossel-container" id="carrosselContainer">
+    <button class="carrossel-btn left">❮</button>
+    <div class="carrossel" id="carrossel"></div>
+    <button class="carrossel-btn right">❯</button>
+  </div>
+  
+
+  <div class="filtros">
+    <input type="text" id="pesquisa" placeholder="Pesquisar por nome..." />
+    <select id="genero">
+      <option value="">Todos os gêneros</option>
+      <option value="Ação">Ação</option>
+      <option value="Comédia">Comédia</option>
+      <option value="Drama">Drama</option>
+    </select>
+    <button id="filtrarBtn">Filtrar</button>
+    <button id="limparBtn">Limpar</button>
+  </div>
+
+  <div style="padding: 0 20px;">
+    <button id="btnAdicionarFilme" class="btn-adicionar" style="display:none;">Adicionar Filme</button>
+  </div>
+
+  <div class="galeria" id="galeria"></div>
 </div>
 
-<div class="filtros">
-  <input type="text" id="pesquisa" placeholder="Pesquisar por nome...">
-  <select id="genero">
-    <option value="">Todos os gêneros</option>
-    <option value="Ação">Ação</option>
-    <option value="Comédia">Comédia</option>
-    <option value="Drama">Drama</option>
-  </select>
-  <button onclick="filtrarFilmes()">Filtrar</button>
-  <button onclick="limparFiltro()">Limpar</button>
+<!-- LOGIN -->
+<div id="loginPage">
+  <h2>Login</h2>
+  <form id="formLogin" style="max-width:400px; margin:auto;">
+    <label for="usuarioLogin">Usuário:</label>
+    <input type="text" id="usuarioLogin" required />
+    <label for="senhaLogin">Senha:</label>
+    <input type="password" id="senhaLogin" required />
+    <button type="submit" class="btn-adicionar" style="margin-top: 15px;">Entrar</button>
+  </form>
 </div>
 
-<div class="login-area" id="loginArea" style="display: none;">
-  <input type="text" id="usuario" placeholder="Usuário">
-  <input type="password" id="senha" placeholder="Senha">
-  <button onclick="fazerLogin()">Entrar</button>
+<!-- ADICIONAR FILME -->
+<div id="addMoviePage">
+  <h2>Adicionar Filme</h2>
+  <form id="formAdicionarFilme" style="max-width:400px; margin:auto;">
+    <label for="nomeFilme">Nome:</label>
+    <input type="text" id="nomeFilme" required />
+
+    <label for="generoFilme">Gênero:</label>
+    <select id="generoFilme" required>
+      <option value="" disabled selected>Selecione o gênero</option>
+      <option value="Ação">Ação</option>
+      <option value="Comédia">Comédia</option>
+      <option value="Drama">Drama</option>
+    </select>
+
+    <label for="avaliacaoFilme">Avaliação (0 a 5):</label>
+    <input type="number" id="avaliacaoFilme" min="0" max="5" step="0.1" required />
+
+    <label for="descricaoFilme">Descrição:</label>
+    <textarea id="descricaoFilme" rows="3" required></textarea>
+
+    <label for="imagemFilme">URL da imagem:</label>
+    <input type="text" id="imagemFilme" required />
+
+    <button type="submit" class="btn-adicionar" style="margin-top:15px;">Adicionar</button>
+  </form>
 </div>
 
-<div class="add-filme" id="addFilme" style="display: none;">
-  <input type="text" id="novoNome" placeholder="Nome do Filme">
-  <input type="text" id="novoGenero" placeholder="Gênero">
-  <input type="number" id="novaAvaliacao" placeholder="Avaliação (0 a 5)" min="0" max="5" step="0.1">
-  <input type="text" id="novaDescricao" placeholder="Descrição">
-  <input type="text" id="novaImagem" placeholder="URL do pôster">
-  <button onclick="adicionarFilme()">Adicionar Filme</button>
+<!-- POPUP DETALHES FILME -->
+<div class="popup" id="popupDetalhes">
+  <div class="popup-content">
+    <button class="close-btn">×</button>
+    <div id="detalhesConteudo"></div>
+  </div>
 </div>
 
-<div class="galeria" id="galeria"></div>
+<!-- POPUP EDITAR FILME -->
+<div class="popup" id="popupEditar">
+  <div class="popup-content">
+    <button class="close-btn" id="fecharEditar">×</button>
+    <h2>Editar Filme</h2>
+    <form id="formEditarFilme">
+      <label for="editarNomeFilme">Nome:</label>
+      <input type="text" id="editarNomeFilme" required />
 
-<div class="popup" id="popup">
-  <div class="popup-content" id="popupContent">
-    <button onclick="fecharPopup()">Fechar</button>
+      <label for="editarGeneroFilme">Gênero:</label>
+      <select id="editarGeneroFilme" required>
+        <option value="Ação">Ação</option>
+        <option value="Comédia">Comédia</option>
+        <option value="Drama">Drama</option>
+      </select>
+
+      <label for="editarAvaliacaoFilme">Avaliação (0 a 5):</label>
+      <input type="number" id="editarAvaliacaoFilme" min="0" max="5" step="0.1" required />
+
+      <label for="editarDescricaoFilme">Descrição:</label>
+      <textarea id="editarDescricaoFilme" rows="3" required></textarea>
+
+      <label for="editarImagemFilme">URL da imagem:</label>
+      <input type="text" id="editarImagemFilme" required />
+
+      <button type="submit" class="btn-adicionar" style="margin-top:15px;">Salvar</button>
+    </form>
   </div>
 </div>
 
 <script>
-  let logado = false;
-
   let filmes = [
-    {
-      nome: "Filme 1",
-      genero: "Ação",
-      avaliacao: 4.5,
-      descricao: "Filme de ação cheio de adrenalina.",
-      imagem: "https://image.tmdb.org/t/p/original/7jvlqGsxeMKscskuUZgKk0Kuv99.jpg"
-    },
-    {
-      nome: "Filme 2",
-      genero: "Comédia",
-      avaliacao: 3.2,
-      descricao: "Comédia leve e divertida.",
-      imagem: "https://image.tmdb.org/t/p/original/7jvlqGsxeMKscskuUZgKk0Kuv99.jpg"
-    },
-    {
-      nome: "Filme 3",
-      genero: "Drama",
-      avaliacao: 2.5,
-      descricao: "Drama intenso e comovente.",
-      imagem: "https://image.tmdb.org/t/p/original/7jvlqGsxeMKscskuUZgKk0Kuv99.jpg"
-    }
+    { nome: "Vingadores: Ultimato", genero: "Ação", avaliacao: 4.7, descricao: "Uma batalha épica dos heróis.", imagem: "https://ovicio.com.br/wp-content/uploads/2019/03/20190314-avengers-endgame-poster.jpg" },
+    { nome: "A Vida é Bela", genero: "Drama", avaliacao: 4.8, descricao: "Um emocionante drama familiar.", imagem: "https://upload.wikimedia.org/wikipedia/pt/thumb/8/8e/La_vita_%C3%A8_bella.jpg/220px-La_vita_%C3%A8_bella.jpg" },
+    { nome: "Deadpool", genero: "Comédia", avaliacao: 4.2, descricao: "Comédia irreverente e cheia de ação.", imagem: "https://upload.wikimedia.org/wikipedia/pt/0/09/Deadpool_poster.jpg" },
+    { nome: "Clube da Luta", genero: "Drama", avaliacao: 4.3, descricao: "Um olhar sombrio sobre a vida moderna.", imagem: "https://upload.wikimedia.org/wikipedia/pt/thumb/8/89/Clube_da_Luta_p%C3%B4ster.jpg/220px-Clube_da_Luta_p%C3%B4ster.jpg" }
   ];
 
-  function carregarCarrossel() {
-    const carrossel = document.getElementById("carrossel");
-    carrossel.innerHTML = "";
-    const ultimos = filmes.slice(-3).reverse();
-    ultimos.forEach(f => {
-      const img = document.createElement("img");
-      img.src = f.imagem;
-      img.alt = f.nome;
-      carrossel.appendChild(img);
-    });
+  let usuarioLogado = false;
+
+  // Carrega filmes do localStorage se existir
+  function carregarFilmesStorage() {
+    const filmesStorage = localStorage.getItem("filmes");
+    if (filmesStorage) {
+      filmes = JSON.parse(filmesStorage);
+    }
   }
 
-  function scrollCarrossel(direction) {
-    const carrossel = document.getElementById("carrossel");
-    const scrollAmount = 220;
-    carrossel.scrollBy({
-      left: direction * scrollAmount,
-      behavior: 'smooth'
-    });
+  function salvarFilmesStorage() {
+    localStorage.setItem("filmes", JSON.stringify(filmes));
+  }
+
+  function corAvaliacao(av) {
+    if (av > 4) return "verde";
+    if (av > 2) return "laranja";
+    return "vermelho";
   }
 
   function mostrarFilmes(lista) {
-    const galeria = document.getElementById("galeria");
-    galeria.innerHTML = "";
-    lista.forEach(filme => {
-      const box = document.createElement("div");
-      box.className = "filme-box";
-      const cor = filme.avaliacao > 4 ? 'verde' :
-                  filme.avaliacao > 2 ? 'laranja' : 'vermelho';
-
-      box.innerHTML = `
-        <img src="${filme.imagem}" alt="${filme.nome}">
-        <h3>${filme.nome}</h3>
-        <p><strong>Gênero:</strong> ${filme.genero}</p>
-        <p><strong>Avaliação:</strong> <span class="avaliacao ${cor}">${filme.avaliacao}</span></p>
-        <button onclick='mostrarDetalhes(${JSON.stringify(filme)})'>Ver Detalhes</button>
-      `;
-      galeria.appendChild(box);
+    $("#galeria").empty();
+    lista.forEach((f, index) => {
+      let botoes;
+      if (usuarioLogado) {
+        botoes = `
+          <button class="editar-filme" data-index="${index}">Editar</button>
+          <button class="excluir-filme" data-index="${index}">Excluir</button>
+        `;
+      } else {
+        botoes = `<button class="ver-detalhes" data-nome="${f.nome}">Ver Detalhes</button>`;
+      }
+      $("#galeria").append(`
+        <div class="filme-box">
+          <img src="${f.imagem}" alt="${f.nome}">
+          <h3>${f.nome}</h3>
+          <p><strong>Gênero:</strong> ${f.genero}</p>
+          <p><strong>Avaliação:</strong> <span class="avaliacao ${corAvaliacao(f.avaliacao)}">${f.avaliacao.toFixed(1)}</span></p>
+          ${botoes}
+        </div>
+      `);
     });
   }
 
-  function filtrarFilmes() {
-    const termo = document.getElementById("pesquisa").value.toLowerCase();
-    const genero = document.getElementById("genero").value;
-    const filtrados = filmes.filter(filme =>
-      filme.nome.toLowerCase().includes(termo) &&
-      (genero === "" || filme.genero === genero)
-    );
-    mostrarFilmes(filtrados);
-  }
+  let indiceCarrossel = 0;
 
-  function limparFiltro() {
-    document.getElementById("pesquisa").value = "";
-    document.getElementById("genero").value = "";
-    mostrarFilmes(filmes);
+  function carregarCarrossel() {
+    $("#carrossel").empty();
+    filmes.slice(-5).forEach(f => {
+      const img = $(`<img src="${f.imagem}" alt="${f.nome}" data-nome="${f.nome}">`);
+      $("#carrossel").append(img);
+    });
+    atualizarSlide();
   }
-
-  function mostrarDetalhes(filme) {
-    const popup = document.getElementById("popup");
-    const conteudo = document.getElementById("popupContent");
-    conteudo.innerHTML = `
-      <h2>${filme.nome}</h2>
-      <p><strong>Gênero:</strong> ${filme.genero}</p>
-      <p><strong>Avaliação:</strong> ${filme.avaliacao}</p>
-      <p>${filme.descricao}</p>
-      <img src="${filme.imagem}" alt="${filme.nome}" style="width:100%; margin-top:10px;">
-      <button onclick="fecharPopup()">Fechar</button>
-    `;
-    popup.style.display = "flex";
+  
+  function atualizarSlide() {
+    const total = $("#carrossel img").length;
+    if (indiceCarrossel < 0) indiceCarrossel = total - 1;
+    if (indiceCarrossel >= total) indiceCarrossel = 0;
+    const largura = $("#carrosselContainer").width();
+    $("#carrossel").css("transform", `translateX(-${indiceCarrossel * largura}px)`);
   }
+  
+  
 
-  function fecharPopup() {
-    document.getElementById("popup").style.display = "none";
-  }
+  function mostrarTelaHome() {
+    $("#homePage").show();
+    $("#loginPage").hide();
+    $("#addMoviePage").hide();
 
-  function toggleLogin() {
-    const login = document.getElementById("loginArea");
-    login.style.display = login.style.display === "none" ? "flex" : "none";
-  }
-
-  function fazerLogin() {
-    const usuario = document.getElementById("usuario").value;
-    const senha = document.getElementById("senha").value;
-    if (usuario === "admin" && senha === "1234") {
-      alert("Login realizado com sucesso!");
-      logado = true;
-      document.getElementById("addFilme").style.display = "flex";
-      document.getElementById("loginArea").style.display = "none";
+    if(usuarioLogado) {
+      $("#carrosselContainer").addClass("oculto");
+      $("#btnAdicionarFilme").show();
+      $("#linkLogin").hide();
+      $("#linkLogout").show();
+      $("#linkHome").hide();
     } else {
-      alert("Usuário ou senha incorretos!");
+      $("#carrosselContainer").removeClass("oculto");
+      $("#btnAdicionarFilme").hide();
+      $("#linkLogin").show();
+      $("#linkLogout").hide();
+      $("#linkHome").hide();
     }
-  }
-
-  function adicionarFilme() {
-    const nome = document.getElementById("novoNome").value;
-    const genero = document.getElementById("novoGenero").value;
-    const avaliacao = parseFloat(document.getElementById("novaAvaliacao").value);
-    const descricao = document.getElementById("novaDescricao").value;
-    const imagem = document.getElementById("novaImagem").value;
-
-    if (!nome || !genero || isNaN(avaliacao) || !descricao || !imagem) {
-      alert("Preencha todos os campos corretamente.");
-      return;
-    }
-
-    filmes.push({ nome, genero, avaliacao, descricao, imagem });
-    limparFiltro();
+    mostrarFilmes(filmes);
     carregarCarrossel();
   }
 
-  // Inicialização
-  carregarCarrossel();
-  mostrarFilmes(filmes);
+  function mostrarTelaLogin() {
+    $("#homePage").hide();
+    $("#loginPage").show();
+    $("#addMoviePage").hide();
+    $("#linkHome").show();
+    $("#linkLogin").hide();
+    $("#linkLogout").hide();
+  }
+
+  function mostrarTelaAddFilme() {
+    $("#homePage").hide();
+    $("#loginPage").hide();
+    $("#addMoviePage").show();
+    $("#linkHome").show();
+    $("#linkLogin").hide();
+    $("#linkLogout").hide();
+  }
+
+  $(document).ready(function () {
+    carregarFilmesStorage();
+    mostrarTelaHome();
+    $(document).on("click", "#carrossel img", function () {
+      const nome = $(this).data("nome");
+      const f = filmes.find(f => f.nome === nome);
+      if(f) {
+        $("#detalhesConteudo").html(`
+          <h2>${f.nome}</h2>
+          <p><strong>Gênero:</strong> ${f.genero}</p>
+          <p><strong>Avaliação:</strong> ${f.avaliacao.toFixed(1)}</p>
+          <p><strong>Descrição:</strong> ${f.descricao}</p>
+          <img src="${f.imagem}" alt="${f.nome}" />
+        `);
+        $("#popupDetalhes").fadeIn();
+      }
+    });
+    
+
+    // Scroll carrossel
+    $(".carrossel-btn.left").click(() => {
+      indiceCarrossel--;
+      atualizarSlide();
+    });
+    $(".carrossel-btn.right").click(() => {
+      indiceCarrossel++;
+      atualizarSlide();
+    });
+    
+
+    // Filtrar filmes
+    $("#filtrarBtn").click(() => {
+      const termo = $("#pesquisa").val().toLowerCase();
+      const genero = $("#genero").val();
+      const filtrados = filmes.filter(f =>
+        f.nome.toLowerCase().includes(termo) &&
+        (genero === "" || f.genero === genero)
+      );
+      mostrarFilmes(filtrados);
+    });
+
+    // Limpar filtros
+    $("#limparBtn").click(() => {
+      $("#pesquisa").val("");
+      $("#genero").val("");
+      mostrarFilmes(filmes);
+    });
+
+    // Filtrar em tempo real ao digitar
+    $("#pesquisa").on("input", () => {
+      $("#filtrarBtn").click();
+    });
+
+    // Ver detalhes do filme (popup)
+    $(document).on("click", ".ver-detalhes", function () {
+      const nome = $(this).data("nome");
+      const f = filmes.find(f => f.nome === nome);
+      if(f) {
+        $("#detalhesConteudo").html(`
+          <h2>${f.nome}</h2>
+          <p><strong>Gênero:</strong> ${f.genero}</p>
+          <p><strong>Avaliação:</strong> ${f.avaliacao.toFixed(1)}</p>
+          <p><strong>Descrição:</strong> ${f.descricao}</p>
+          <img src="${f.imagem}" alt="${f.nome}" />
+        `);
+        $("#popupDetalhes").fadeIn();
+      }
+    });
+
+    // Fechar popup detalhes
+    $("#popupDetalhes .close-btn").click(() => {
+      $("#popupDetalhes").fadeOut();
+    });
+
+    // Botão Login
+    $("#linkLogin").click(() => {
+      mostrarTelaLogin();
+    });
+
+    // Botão Logout
+    $("#linkLogout").click(() => {
+      usuarioLogado = false;
+      localStorage.removeItem("usuarioLogado");
+      mostrarTelaHome();
+    });
+
+    // Botão Home
+    $("#linkHome").click(() => {
+      mostrarTelaHome();
+    });
+
+    // Login (simples)
+    $("#formLogin").submit(function (e) {
+      e.preventDefault();
+      const usuario = $("#usuarioLogin").val().trim();
+      const senha = $("#senhaLogin").val().trim();
+
+      // Simples validação fixa para exemplo
+      if (usuario === "admin" && senha === "1234") {
+        usuarioLogado = true;
+        localStorage.setItem("usuarioLogado", "true");
+        mostrarTelaHome();
+        alert("Login realizado com sucesso!");
+      } else {
+        alert("Usuário ou senha incorretos.");
+      }
+    });
+
+    // Checar se usuário estava logado (localStorage)
+    if(localStorage.getItem("usuarioLogado") === "true") {
+      usuarioLogado = true;
+      mostrarTelaHome();
+    }
+
+    // Botão para abrir tela adicionar filme
+    $("#btnAdicionarFilme").click(() => {
+      mostrarTelaAddFilme();
+    });
+
+    // Adicionar filme
+    $("#formAdicionarFilme").submit(function (e) {
+      e.preventDefault();
+
+      const novoFilme = {
+        nome: $("#nomeFilme").val().trim(),
+        genero: $("#generoFilme").val(),
+        avaliacao: parseFloat($("#avaliacaoFilme").val()),
+        descricao: $("#descricaoFilme").val().trim(),
+        imagem: $("#imagemFilme").val().trim()
+      };
+
+      filmes.push(novoFilme);
+      salvarFilmesStorage();
+
+      // Limpar form
+      this.reset();
+
+      alert("Filme adicionado!");
+      mostrarTelaHome();
+    });
+
+    // Excluir filme
+    $(document).on("click", ".excluir-filme", function() {
+      const idx = $(this).data("index");
+      if (confirm(`Tem certeza que deseja excluir o filme "${filmes[idx].nome}"?`)) {
+        filmes.splice(idx, 1);
+        salvarFilmesStorage();
+        mostrarFilmes(filmes);
+        carregarCarrossel();
+      }
+    });
+
+    // Editar filme - abrir popup com dados
+    $(document).on("click", ".editar-filme", function() {
+      const idx = $(this).data("index");
+      const f = filmes[idx];
+      if (!f) return;
+
+      $("#formEditarFilme").data("index", idx);
+      $("#editarNomeFilme").val(f.nome);
+      $("#editarGeneroFilme").val(f.genero);
+      $("#editarAvaliacaoFilme").val(f.avaliacao);
+      $("#editarDescricaoFilme").val(f.descricao);
+      $("#editarImagemFilme").val(f.imagem);
+
+      $("#popupEditar").fadeIn();
+    });
+
+    // Fechar popup editar
+    $("#fecharEditar").click(() => {
+      $("#popupEditar").fadeOut();
+    });
+
+    // Salvar edição filme
+    $("#formEditarFilme").submit(function(e) {
+      e.preventDefault();
+      const idx = $(this).data("index");
+      if (idx === undefined) return;
+
+      filmes[idx] = {
+        nome: $("#editarNomeFilme").val().trim(),
+        genero: $("#editarGeneroFilme").val(),
+        avaliacao: parseFloat($("#editarAvaliacaoFilme").val()),
+        descricao: $("#editarDescricaoFilme").val().trim(),
+        imagem: $("#editarImagemFilme").val().trim()
+      };
+
+      salvarFilmesStorage();
+      mostrarFilmes(filmes);
+      carregarCarrossel();
+      $("#popupEditar").fadeOut();
+    });
+  });
 </script>
 
 </body>
 </html>
+
