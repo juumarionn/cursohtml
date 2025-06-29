@@ -1,148 +1,130 @@
-/* Reseta o estilo padrão */
-* {
-    margin: 0;
-    box-sizing: border-box;
-}
+    * {
+      box-sizing: border-box; 
+    }
 
-/* Estilo do header */
-header {
-    background-color: black;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 20px;
-    align-items: center;
-}
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #1a1a1a;
+      color: #fff;
+    }
 
-.p-navparagrafo {
-    font-size: 24px;
-    font-weight: bold;
-}
+    header {
+      background-color: #800000;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-ul {
-    display: flex;
-    list-style-type: none;
-}
+    header h1 {
+        margin: 0; 
+    }
 
-.li-navbar {
-    margin: 0 15px;
-    cursor: pointer;
-    padding: 10px;
-}
+    .menu-icon {
+      font-size: 28px;
+      cursor: pointer;
+    }
 
-.li-navbar:hover {
-    color: rgb(192, 190, 190);
-    font-size: 18px;
-}
+    nav {
+      display: none;
+      flex-direction: column;
+      background: #660000;
+      position: absolute;
+      top: 60px;
+      left: 0;
+      width: 100%;
+      z-index: 10;
+    }
 
-/* Estilo geral da página */
-body {
-    background-color: brown;
-    font-family: Arial, sans-serif;
-}
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 15px;
+      border-bottom: 1px solid #990000;
+    }
 
-/* Container de Mídias */
-.container {
-    width: 80%;
-    margin: 20px auto;
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-}
+    nav a:hover {
+      background: #990000;
+    }
 
-/* Caixas de Mídia */
-.box {
-    padding: 10px;
-    margin: 10px;
-    text-align: center;
-    font-size: 16px;
-    display: inline-block;
-    width: 100%;
-    max-width: 200px;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-}
+    .container {
+      padding: 20px;
+    }
 
-button {
-    cursor: pointer;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    padding: 10px;
-}
+    .galeria {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
 
-button:hover {
-    background-color: #0056b3;
-}
+    .card {
+      background: #2a2a2a;
+      border-radius: 10px;
+      padding: 15px;
+      position: relative;
+    }
 
-/* Resultados das buscas (estilo das caixas de mídia) */
-#resultado {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: 20px;
-}
+    .card img {
+      width: 100%;
+      height: 40%;
+      object-fit: cover;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
 
-.media-item {
-    background-color: white;
-    border: 1px solid #ccc;
-    padding: 15px;
-    border-radius: 8px;
-    width: 200px;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+    .avaliacao.verde {
+      color: limegreen; 
+    }
 
-#resultado img {
-    width: 100%;
-    max-height: 150px;
-    border-radius: 8px;
-}
+    .avaliacao.laranja {
+      color: orange; 
+    }
 
-/* Tela de Detalhes */
-#detalhes {
-    display: none;
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 600px;
-    margin: 20px auto;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+    .avaliacao.vermelho { 
+      color: red; 
+    }
 
-/* Formulário de Cadastro */
-#formulario {
-    display: none;
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 600px;
-    margin: 20px auto;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+    .btn {
+      margin: 5px 3px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
 
-#formulario input, #formulario select {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
+    .btn-add {
+      display: none;
+      margin: 20px auto;
+      background: #cc0000;
+      color: white;
+    }
 
-/* Área de Login */
-#loginArea {
-    text-align: center;
-    margin-top: 20px;
-}
+    .formulario, #login-form {
+      display: none;
+      background: #2a2a2a;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 10px;
+    }
 
-#adminArea {
-    display: none;
-    margin-top: 20px;
-}
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 5px;
+    }
 
-#adminOptions {
-    margin-bottom: 20px;
-}
+    .btn-login {
+      background: #cc0000;
+      color: white;
+    }
+    
+    .comentarios {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #ccc;
+      max-height: 100px;
+      overflow-y: auto;
+    }

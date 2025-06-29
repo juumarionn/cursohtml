@@ -5,84 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cinema Senai</title>
     <link rel="stylesheet" href="cinema.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 
 <header>
-    <p class="p-navparagrafo">Cinema Senai</p>
-    <ul>
-        <li class="li-navbar" onclick="Tela('home')">Home</li>
-        <li class="li-navbar" onclick="Tela('area')">Área</li>
-    </ul>
+  <h1>Cinema Senai</h1>
+  <div class="menu-icon" id="menu-btn">☰</div>
 </header>
 
-<!-- Tela Home -->
-<div id="home" class="container">
-    <div class="box">
-        <input type="text" id="boxPesquisar" placeholder="Pesquise aqui">
-    </div>
+<nav id="menu">
+  <a href="#" class="menu-link" data-section="home">Home</a>
+  <a href="#" class="menu-link" data-section="filmes">Filmes</a>
+  <a href="#" class="menu-link" data-section="series">Séries</a>
+  <a href="#" class="menu-link" data-section="login">Login</a>
+</nav>
 
-    <div class="box">
-        <select id="boxFiltrar">
-            <option value="todos">Todos</option>
-            <option value="filme">Filme</option>
-            <option value="serie">Série</option>
-        </select>
-    </div>
+<div class="container">
+  <button class="btn btn-add" id="abrir-form">Adicionar Filme/Série</button>
+  <button class="btn btn-add" id="btn-logout" style="display:none; background:#444;">Sair</button>
 
-    <div class="box">
-        <button id="boxBuscar">Buscar</button>
-    </div>
+  <form id="formulario" class="formulario">
+    <input type="url" id="imagem" placeholder="URL da imagem (pôster)" required>
+    <select id="tipo" required>
+      <option value="">Tipo</option>
+      <option value="Filme">Filme</option>
+      <option value="Série">Série</option>
+    </select>
+    <input type="text" id="titulo" placeholder="Título" required>
 
-    <div class="box">
-        <button id="boxLimpar">Limpar</button>
-    </div>
+    <select id="genero" required>
+      <option value="">Gênero</option>
+      <option>Drama</option>
+      <option>Ação</option>
+      <option>Comédia</option>
+      <option>Suspense</option>
+      <option>Ficção Científica</option>
+      <option>Romance</option>
+      <option>Terror</option>
+      <option>Documentário</option>
+      <option>Animação</option>
+    </select>
 
-    <div id="resultado"></div> <!-- Onde os resultados vão ser mostrados -->
-</div>
+    <input type="number" id="ano" placeholder="Ano" min="1888" max="2100" required>
 
-<!-- Tela de Área -->
-<div id="area" style="display: none;">
-    <h2>Área de Login</h2>
-    <div id="loginArea">
-        <input type="text" id="loginUser" placeholder="Usuário">
-        <input type="password" id="loginPass" placeholder="Senha">
-        <button id="loginBtn">Entrar</button>
-    </div>
+    <input type="number" id="avaliacao" placeholder="Avaliação (1 a 5)" min="1" max="5" required>
+    <textarea id="descricao" placeholder="Descrição" required></textarea>
+    <button type="submit" class="btn btn-login">Cadastrar</button>
+  </form>
 
-    <div id="adminArea" style="display: none;">
-        <h3>Bem-vindo, Funcionario!</h3>
-        <div id="adminOptions">
-            <button id="btnCadastrarNovo">Cadastrar Novo</button>
-        </div>
-        <div id="adminResults"></div>
-    </div>
-</div>
+  <form id="login-form" class="formulario">
+    <input type="text" id="usuario" placeholder="Usuário" required>
+    <input type="password" id="senha" placeholder="Senha" required>
+    <button type="submit" class="btn btn-login">Entrar</button>
+  </form>
 
-<!-- Tela de Detalhes de Mídia -->
-<div id="detalhes" style="display: none;">
-    <h2>Detalhes da Mídia</h2>
-    <div id="detalhesInfo"></div>
-    <button id="fecharDetalhes">Fechar</button>
-</div>
-
-<!-- Formulário para Cadastro de Novo Filme/Série -->
-<div id="formulario" style="display: none;">
-    <h2>Cadastrar Novo Filme/Série</h2>
-    <form id="formCadastrar">
-        <input type="text" id="nomeMidia" placeholder="Nome" required>
-        <select id="tipoMidia">
-            <option value="filme">Filme</option>
-            <option value="serie">Série</option>
-        </select>
-        <input type="text" id="generoMidia" placeholder="Gênero" required>
-        <input type="number" id="anoMidia" placeholder="Ano" required>
-        <input type="text" id="duracaoMidia" placeholder="Duração" required>
-        <input type="text" id="avaliacaoMidia" placeholder="Avaliação" required>
-        <input type="text" id="imagemMidia" placeholder="Imagem (URL)" required>
-        <button type="submit">Cadastrar</button>
-    </form>
-    <button id="fecharForm">Fechar</button>
+  <div class="galeria" id="galeria"></div>
 </div>
 
 <script src="cinema.js"></script>
