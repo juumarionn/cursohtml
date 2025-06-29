@@ -9,119 +9,120 @@
 </head>
 <body>
 
-  <header>
-    <h1>Galeria Senai</h1>
-    <nav>
-      <a id="linkHome" style="display:none; cursor:pointer;">Home</a>
-      <a id="linkLogin">Login</a>
-      <a id="linkLogout" style="display:none; cursor:pointer;">Logout</a>
-    </nav>
-  </header>
+<header>
+  <h1>Galeria Senai</h1>
+  <nav>
+    <a id="linkHome" style="display:none; cursor:pointer;">Home</a>
+    <a id="linkLogin">Login</a>
+    <a id="linkLogout" style="display:none; cursor:pointer;">Logout</a>
+  </nav>
+</header>
+
+<!-- HOME -->
+<div id="homePage">
+  <div class="carrossel-container" id="carrosselContainer">
+    <button class="carrossel-btn left">❮</button>
+    <div class="carrossel" id="carrossel"></div>
+    <button class="carrossel-btn right">❯</button>
+  </div>
   
-  <!-- HOME -->
-  <div id="homePage">
-    <div class="carrossel-container" id="carrosselContainer">
-      <button class="carrossel-btn left">❮</button>
-      <div class="carrossel" id="carrossel"></div>
-      <button class="carrossel-btn right">❯</button>
-    </div>
-  
-    <div class="filtros">
-      <input type="text" id="pesquisa" placeholder="Pesquisar por nome..." />
-      <select id="genero">
-        <option value="">Todos os gêneros</option>
+
+  <div class="filtros">
+    <input type="text" id="pesquisa" placeholder="Pesquisar por nome..." />
+    <select id="genero">
+      <option value="">Todos os gêneros</option>
+      <option value="Ação">Ação</option>
+      <option value="Comédia">Comédia</option>
+      <option value="Drama">Drama</option>
+    </select>
+    <button id="filtrarBtn">Filtrar</button>
+    <button id="limparBtn">Limpar</button>
+  </div>
+
+  <div style="padding: 0 20px;">
+    <button id="btnAdicionarFilme" class="btn-adicionar" style="display:none;">Adicionar Filme</button>
+  </div>
+
+  <div class="galeria" id="galeria"></div>
+</div>
+
+<!-- LOGIN -->
+<div id="loginPage">
+  <h2>Login</h2>
+  <form id="formLogin" style="max-width:400px; margin:auto;">
+    <label for="usuarioLogin">Usuário:</label>
+    <input type="text" id="usuarioLogin" required />
+    <label for="senhaLogin">Senha:</label>
+    <input type="password" id="senhaLogin" required />
+    <button type="submit" class="btn-adicionar" style="margin-top: 15px;">Entrar</button>
+  </form>
+</div>
+
+<!-- ADICIONAR FILME -->
+<div id="addMoviePage">
+  <h2>Adicionar Filme</h2>
+  <form id="formAdicionarFilme" style="max-width:400px; margin:auto;">
+    <label for="nomeFilme">Nome:</label>
+    <input type="text" id="nomeFilme" required />
+
+    <label for="generoFilme">Gênero:</label>
+    <select id="generoFilme" required>
+      <option value="" disabled selected>Selecione o gênero</option>
+      <option value="Ação">Ação</option>
+      <option value="Comédia">Comédia</option>
+      <option value="Drama">Drama</option>
+    </select>
+
+    <label for="avaliacaoFilme">Avaliação (0 a 5):</label>
+    <input type="number" id="avaliacaoFilme" min="0" max="5" step="0.1" required />
+
+    <label for="descricaoFilme">Descrição:</label>
+    <textarea id="descricaoFilme" rows="3" required></textarea>
+
+    <label for="imagemFilme">URL da imagem:</label>
+    <input type="text" id="imagemFilme" required />
+
+    <button type="submit" class="btn-adicionar" style="margin-top:15px;">Adicionar</button>
+  </form>
+</div>
+
+<!-- POPUP DETALHES FILME -->
+<div class="popup" id="popupDetalhes">
+  <div class="popup-content">
+    <button class="close-btn">×</button>
+    <div id="detalhesConteudo"></div>
+  </div>
+</div>
+
+<!-- POPUP EDITAR FILME -->
+<div class="popup" id="popupEditar">
+  <div class="popup-content">
+    <button class="close-btn" id="fecharEditar">×</button>
+    <h2>Editar Filme</h2>
+    <form id="formEditarFilme">
+      <label for="editarNomeFilme">Nome:</label>
+      <input type="text" id="editarNomeFilme" required />
+
+      <label for="editarGeneroFilme">Gênero:</label>
+      <select id="editarGeneroFilme" required>
         <option value="Ação">Ação</option>
         <option value="Comédia">Comédia</option>
         <option value="Drama">Drama</option>
       </select>
-      <button id="filtrarBtn">Filtrar</button>
-      <button id="limparBtn">Limpar</button>
-    </div>
-  
-    <div style="padding: 0 20px;">
-      <button id="btnAdicionarFilme" class="btn-adicionar" style="display:none;">Adicionar Filme</button>
-    </div>
-  
-    <div class="galeria" id="galeria"></div>
-  </div>
-  
-  <!-- LOGIN -->
-  <div id="loginPage">
-    <h2>Login</h2>
-    <form id="formLogin" style="max-width:400px; margin:auto;">
-      <label for="usuarioLogin">Usuário:</label>
-      <input type="text" id="usuarioLogin" required />
-      <label for="senhaLogin">Senha:</label>
-      <input type="password" id="senhaLogin" required />
-      <button type="submit" class="btn-adicionar" style="margin-top: 15px;">Entrar</button>
+
+      <label for="editarAvaliacaoFilme">Avaliação (0 a 5):</label>
+      <input type="number" id="editarAvaliacaoFilme" min="0" max="5" step="0.1" required />
+
+      <label for="editarDescricaoFilme">Descrição:</label>
+      <textarea id="editarDescricaoFilme" rows="3" required></textarea>
+
+      <label for="editarImagemFilme">URL da imagem:</label>
+      <input type="text" id="editarImagemFilme" required />
+
+      <button type="submit" class="btn-adicionar" style="margin-top:15px;">Salvar</button>
     </form>
   </div>
-  
-  <!-- ADICIONAR FILME -->
-  <div id="addMoviePage">
-    <h2>Adicionar Filme</h2>
-    <form id="formAdicionarFilme" style="max-width:400px; margin:auto;">
-      <label for="nomeFilme">Nome:</label>
-      <input type="text" id="nomeFilme" required />
-  
-      <label for="generoFilme">Gênero:</label>
-      <select id="generoFilme" required>
-        <option value="" disabled selected>Selecione o gênero</option>
-        <option value="Ação">Ação</option>
-        <option value="Comédia">Comédia</option>
-        <option value="Drama">Drama</option>
-      </select>
-  
-      <label for="avaliacaoFilme">Avaliação (0 a 5):</label>
-      <input type="number" id="avaliacaoFilme" min="0" max="5" step="0.1" required />
-  
-      <label for="descricaoFilme">Descrição:</label>
-      <textarea id="descricaoFilme" rows="3" required></textarea>
-  
-      <label for="imagemFilme">URL da imagem:</label>
-      <input type="text" id="imagemFilme" required />
-  
-      <button type="submit" class="btn-adicionar" style="margin-top:15px;">Adicionar</button>
-    </form>
-  </div>
-  
-  <!-- POPUP DETALHES FILME -->
-  <div class="popup" id="popupDetalhes">
-    <div class="popup-content">
-      <button class="close-btn">×</button>
-      <div id="detalhesConteudo"></div>
-    </div>
-  </div>
-  
-  <!-- POPUP EDITAR FILME -->
-  <div class="popup" id="popupEditar">
-    <div class="popup-content">
-      <button class="close-btn" id="fecharEditar">×</button>
-      <h2>Editar Filme</h2>
-      <form id="formEditarFilme">
-        <label for="editarNomeFilme">Nome:</label>
-        <input type="text" id="editarNomeFilme" required />
-  
-        <label for="editarGeneroFilme">Gênero:</label>
-        <select id="editarGeneroFilme" required>
-          <option value="Ação">Ação</option>
-          <option value="Comédia">Comédia</option>
-          <option value="Drama">Drama</option>
-        </select>
-  
-        <label for="editarAvaliacaoFilme">Avaliação (0 a 5):</label>
-        <input type="number" id="editarAvaliacaoFilme" min="0" max="5" step="0.1" required />
-  
-        <label for="editarDescricaoFilme">Descrição:</label>
-        <textarea id="editarDescricaoFilme" rows="3" required></textarea>
-  
-        <label for="editarImagemFilme">URL da imagem:</label>
-        <input type="text" id="editarImagemFilme" required />
-  
-        <button type="submit" class="btn-adicionar" style="margin-top:15px;">Salvar</button>
-      </form>
-    </div>
-  </div>
+</div>
 
   <script src="galeria.js"></script>
 

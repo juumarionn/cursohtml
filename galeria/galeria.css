@@ -1,215 +1,249 @@
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-}
-header {
-  background-color: #222;
-  color: white;
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-}
-nav a {
-  color: white;
-  margin-left: 20px;
-  text-decoration: none;
-  font-weight: bold;
-  cursor: pointer;
-}
-.carrossel-container {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  height: 300px;
-  margin-bottom: 20px;
-}
-.carrossel {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  overflow-x: scroll;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-}
-.carrossel img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  scroll-snap-align: start;
-  flex-shrink: 0;
-  cursor: pointer;
-  border-radius: 10px;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-.carrossel img.selecionado {
-  transform: scale(1.1);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-  border: 3px solid #3498db;
-  z-index: 1;
-}
-.carrossel-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  font-size: 24px;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-  z-index: 10;
-  user-select: none;
-}
-.carrossel-btn.left { left: 10px; }
-.carrossel-btn.right { right: 10px; }
-.filtros {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  padding: 0 20px 20px;
-}
-input, select, button {
-  padding: 8px;
-  font-size: 16px;
-}
-.galeria {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-  padding: 0 20px 40px;
-}
-.filme-box {
-  background: white;
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  text-align: center;
-  transition: transform 0.2s;
-  cursor: default;
-}
-.filme-box:hover {
-  transform: translateY(-5px);
-}
-.filme-box img {
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
-  border-radius: 6px;
-}
-.avaliacao {
-  font-weight: bold;
-  padding: 4px;
-  border-radius: 4px;
-  display: inline-block;
-}
-.verde { color: green; }
-.laranja { color: orange; }
-.vermelho { color: red; }
+  * {
+    box-sizing: border-box; 
+  }
 
-.btn-adicionar {
-  margin: 10px 20px;
-  padding: 10px 15px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 6px;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  transition: background-color 0.3s;
-}
-.btn-adicionar:hover {
-  background-color: #2980b9;
-}
-label {
-  display: block;
-  margin: 12px 0 5px;
-  font-weight: bold;
-}
-input[type=text], input[type=number], select, textarea {
-  width: 100%;
-  padding: 8px;
-  font-size: 15px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-textarea {
-  resize: vertical;
-}
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    overflow-x: hidden;
+  }
 
-/* Ocultar carrossel quando logado */
-.carrossel-container.oculto {
-  display: none;
-}
+  header {
+    background-color: #222;
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
 
-/* Paginas ocultas inicialmente */
-#loginPage, #addMoviePage {
-  display: none;
-  padding: 20px;
-}
+  nav a {
+    color: white;
+    margin-left: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+  }
 
-/* Layout botões editar e excluir */
-.filme-box button {
-  margin: 5px 8px 0 8px;
-  padding: 6px 14px;
-  font-size: 14px;
-  cursor: pointer;
-  border-radius: 5px;
-  border: none;
-  color: white;
-  transition: background-color 0.3s;
-}
-.editar-filme {
-  background-color: #2980b9;
-}
-.editar-filme:hover {
-  background-color: #1c5d8b;
-}
-.excluir-filme {
-  background-color: #e74c3c;
-}
-.excluir-filme:hover {
-  background-color: #b93a2b;
-}
+  .carrossel-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    height: 300px;
+    margin-bottom: 20px;
+  }
 
-/* Popup detalhes filme */
-.popup {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.7);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-.popup-content {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 400px;
-  width: 90%;
-  box-sizing: border-box;
-  position: relative;
-  max-height: 90vh;
-  overflow-y: auto;
-}
-.popup-content img {
-  width: 100%;
-  margin-top: 10px;
-  border-radius: 6px;
-}
-.popup-content button.close-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: transparent;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: #333;
-}
+  .carrossel {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease;
+  }
+
+  .carrossel img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border-radius: 10px;
+  }
+
+  .carrossel img.selecionado {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    border: 3px solid #3498db;
+    z-index: 1;
+  }
+
+  .carrossel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 24px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    z-index: 10;
+    user-select: none;
+  }
+
+  .carrossel-btn.left { left: 10px; }
+  .carrossel-btn.right { right: 10px; }
+
+  .filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 0 20px 20px;
+  }
+
+  input, select, button {
+    padding: 8px;
+    font-size: 16px;
+  }
+
+  .galeria {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 0 20px 40px;
+  }
+
+  .filme-box {
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.2s;
+    cursor: default;
+  }
+
+  .filme-box:hover {
+    transform: translateY(-5px);
+  }
+
+  .filme-box img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+
+  .avaliacao {
+    font-weight: bold;
+    padding: 4px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  .verde { color: green; }
+  .laranja { color: orange; }
+  .vermelho { color: red; }
+
+  .btn-adicionar {
+    margin: 10px 20px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    transition: background-color 0.3s;
+  }
+
+  .btn-adicionar:hover {
+    background-color: #2980b9;
+  }
+
+  label {
+    display: block;
+    margin: 12px 0 5px;
+    font-weight: bold;
+  }
+
+  input[type=text], input[type=number], select, textarea {
+    width: 100%;
+    padding: 8px;
+    font-size: 15px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  /* Ocultar carrossel quando logado */
+  .carrossel-container.oculto {
+    display: none;
+  }
+
+  /* Paginas ocultas inicialmente */
+  #loginPage, #addMoviePage {
+    display: none;
+    padding: 20px;
+  }
+
+  /* Layout botões editar e excluir */
+  .filme-box button {
+    margin: 5px 8px 0 8px;
+    padding: 6px 14px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+    color: rgb(255, 255, 255);
+    transition: background-color 0.3s;
+    }
+
+    .ver-detalhes{
+      background-color: rgb(74, 168, 61);
+    }
+
+
+
+  .editar-filme {
+    background-color: #2980b9;
+  }
+
+  .editar-filme:hover {
+    background-color: #1c5d8b;
+  }
+
+  .excluir-filme {
+    background-color: #e74c3c;
+  }
+
+  .excluir-filme:hover {
+    background-color: #b93a2b;
+  }
+
+  /* Popup centralizado para detalhes e edição */
+  .popup {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  .popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    box-sizing: border-box;
+    position: relative;
+    max-height: 80vh;
+    overflow-y: auto;
+    margin: auto;
+  }
+
+  .popup-content img {
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 6px;
+  }
+
+  .popup-content button.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+  }

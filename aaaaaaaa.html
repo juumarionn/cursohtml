@@ -187,8 +187,13 @@
     border: none;
     color: rgb(255, 255, 255);
     transition: background-color 0.3s;
-    background-color:rgb(79, 170, 52) ;
-  }
+    }
+
+    .ver-detalhes{
+      background-color: rgb(74, 168, 61);
+    }
+
+
 
   .editar-filme {
     background-color: #2980b9;
@@ -378,7 +383,6 @@
 
   let usuarioLogado = false;
 
-  // Carrega filmes do localStorage se existir
   function carregarFilmesStorage() {
     const filmesStorage = localStorage.getItem("filmes");
     if (filmesStorage) {
@@ -421,6 +425,8 @@
   }
 
   let indiceCarrossel = 0;
+
+  // localStorage.removeItem("filmes"); só usa se for mexer em algo no codigo, serve para limpar o armazenamento e salvar as alteracoes, mas so pode estar ai se estiver testando e nao funcionando para valer
 
   function carregarCarrossel() {
     $("#carrossel").empty();
@@ -499,8 +505,6 @@
       }
     });
     
-
-    // Scroll carrossel
     $(".carrossel-btn.left").click(() => {
       indiceCarrossel--;
       atualizarSlide();
@@ -509,9 +513,8 @@
       indiceCarrossel++;
       atualizarSlide();
     });
-    
 
-    // Filtrar filmes
+    // filtrar
     $("#filtrarBtn").click(() => {
       const termo = $("#pesquisa").val().toLowerCase();
       const genero = $("#genero").val();
@@ -522,19 +525,19 @@
       mostrarFilmes(filtrados);
     });
 
-    // Limpar filtros
+    // limpar filtro
     $("#limparBtn").click(() => {
       $("#pesquisa").val("");
       $("#genero").val("");
       mostrarFilmes(filmes);
     });
 
-    // Filtrar em tempo real ao digitar
+    // filtrar quando estiver digitando
     $("#pesquisa").on("input", () => {
       $("#filtrarBtn").click();
     });
 
-    // Ver detalhes do filme (popup)
+    // pop up dos detalhes
     $(document).on("click", ".ver-detalhes", function () {
       const nome = $(this).data("nome");
       const f = filmes.find(f => f.nome === nome);
@@ -550,36 +553,34 @@
       }
     });
 
-    // Fechar popup detalhes
     $("#popupDetalhes .close-btn").click(() => {
       $("#popupDetalhes").fadeOut();
     });
 
-    // Botão Login
+    // botao do login
     $("#linkLogin").click(() => {
       mostrarTelaLogin();
     });
 
-    // Botão Logout
+    // botao para sair do login (logout)
     $("#linkLogout").click(() => {
       usuarioLogado = false;
       localStorage.removeItem("usuarioLogado");
       mostrarTelaHome();
     });
 
-    // Botão Home
+    // botao para voltar ao inicio (home)
     $("#linkHome").click(() => {
       mostrarTelaHome();
     });
 
-    // Login (simples)
     $("#formLogin").submit(function (e) {
       e.preventDefault();
       const usuario = $("#usuarioLogin").val().trim();
       const senha = $("#senhaLogin").val().trim();
 
-      // Simples validação fixa para exemplo
-      if (usuario === "admin" && senha === "1234") {
+      // login feito com comparação
+      if (usuario === "admin" && senha === "1234") { // pode colocar mais, sem validacao ou segurança, mas serve (sem validacao por ser feito por comparacao)
         usuarioLogado = true;
         localStorage.setItem("usuarioLogado", "true");
         mostrarTelaHome();
@@ -589,18 +590,16 @@
       }
     });
 
-    // Checar se usuário estava logado (localStorage)
     if(localStorage.getItem("usuarioLogado") === "true") {
       usuarioLogado = true;
       mostrarTelaHome();
     }
 
-    // Botão para abrir tela adicionar filme
     $("#btnAdicionarFilme").click(() => {
       mostrarTelaAddFilme();
     });
 
-    // Adicionar filme
+    // para adicionar um filme
     $("#formAdicionarFilme").submit(function (e) {
       e.preventDefault();
 
@@ -614,15 +613,13 @@
 
       filmes.push(novoFilme);
       salvarFilmesStorage();
-
-      // Limpar form
       this.reset();
 
       alert("Filme adicionado!");
       mostrarTelaHome();
     });
 
-    // Excluir filme
+    // para excluir algum filme
     $(document).on("click", ".excluir-filme", function() {
       const idx = $(this).data("index");
       if (confirm(`Tem certeza que deseja excluir o filme "${filmes[idx].nome}"?`)) {
@@ -633,7 +630,8 @@
       }
     });
 
-    // Editar filme - abrir popup com dados
+    // para editar algum filme
+    // tem novas nomenclaturas de constantes para o salvamento (como no java)
     $(document).on("click", ".editar-filme", function() {
       const idx = $(this).data("index");
       const f = filmes[idx];
@@ -649,12 +647,10 @@
       $("#popupEditar").fadeIn();
     });
 
-    // Fechar popup editar
     $("#fecharEditar").click(() => {
       $("#popupEditar").fadeOut();
     });
 
-    // Salvar edição filme
     $("#formEditarFilme").submit(function(e) {
       e.preventDefault();
       const idx = $(this).data("index");
