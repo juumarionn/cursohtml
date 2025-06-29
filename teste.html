@@ -6,220 +6,250 @@
   <title>Galeria Senai</title>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-    }
-    header {
-      background-color: #222;
-      color: white;
-      padding: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    nav a {
-      color: white;
-      margin-left: 20px;
-      text-decoration: none;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .carrossel-container {
-      position: relative;
-      width: 100%;
-      overflow: hidden;
-      height: 300px;
-      margin-bottom: 20px;
-    }
-    
-    .carrossel {
-      display: flex;
-      width: 100%;
-      height: 100%;
-      transition: transform 0.5s ease;
-    }
-    
-    .carrossel img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      flex-shrink: 0;
-      border-radius: 10px;
-    }
-    
-    .carrossel img.selecionado {
-      transform: scale(1.1);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-      border: 3px solid #3498db;
-      z-index: 1;
-    }
-    .carrossel-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background-color: rgba(0, 0, 0, 0.5);
-      color: white;
-      font-size: 24px;
-      padding: 10px;
-      border: none;
-      cursor: pointer;
-      z-index: 10;
-      user-select: none;
-    }
-    .carrossel-btn.left { left: 10px; }
-    .carrossel-btn.right { right: 10px; }
-    .filtros {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      padding: 0 20px 20px;
-    }
-    input, select, button {
-      padding: 8px;
-      font-size: 16px;
-    }
-    .galeria {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-      padding: 0 20px 40px;
-    }
-    .filme-box {
-      background: white;
-      padding: 10px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      text-align: center;
-      transition: transform 0.2s;
-      cursor: default;
-    }
-    .filme-box:hover {
-      transform: translateY(-5px);
-    }
-    .filme-box img {
-      width: 100%;
-      height: 250px;
-      object-fit: cover;
-      border-radius: 6px;
-    }
-    .avaliacao {
-      font-weight: bold;
-      padding: 4px;
-      border-radius: 4px;
-      display: inline-block;
-    }
-    .verde { color: green; }
-    .laranja { color: orange; }
-    .vermelho { color: red; }
+  * { box-sizing: border-box; }
 
-    .btn-adicionar {
-      margin: 10px 20px;
-      padding: 10px 15px;
-      font-size: 16px;
-      cursor: pointer;
-      border-radius: 6px;
-      background-color: #3498db;
-      color: white;
-      border: none;
-      transition: background-color 0.3s;
-    }
-    .btn-adicionar:hover {
-      background-color: #2980b9;
-    }
-    label {
-      display: block;
-      margin: 12px 0 5px;
-      font-weight: bold;
-    }
-    input[type=text], input[type=number], select, textarea {
-      width: 100%;
-      padding: 8px;
-      font-size: 15px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-      box-sizing: border-box;
-    }
-    textarea {
-      resize: vertical;
-    }
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    overflow-x: hidden;
+  }
 
-    /* Ocultar carrossel quando logado */
-    .carrossel-container.oculto {
-      display: none;
-    }
+  header {
+    background-color: #222;
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
 
-    /* Paginas ocultas inicialmente */
-    #loginPage, #addMoviePage {
-      display: none;
-      padding: 20px;
-    }
+  nav a {
+    color: white;
+    margin-left: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+  }
 
-    /* Layout botões editar e excluir */
-    .filme-box button {
-      margin: 5px 8px 0 8px;
-      padding: 6px 14px;
-      font-size: 14px;
-      cursor: pointer;
-      border-radius: 5px;
-      border: none;
-      color: white;
-      transition: background-color 0.3s;
-    }
-    .editar-filme {
-      background-color: #2980b9;
-    }
-    .editar-filme:hover {
-      background-color: #1c5d8b;
-    }
-    .excluir-filme {
-      background-color: #e74c3c;
-    }
-    .excluir-filme:hover {
-      background-color: #b93a2b;
-    }
+  .carrossel-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    height: 300px;
+    margin-bottom: 20px;
+  }
 
-    /* Popup detalhes filme */
-    .popup {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-    .popup-content {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 400px;
-      width: 90%;
-      box-sizing: border-box;
-      position: relative;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-    .popup-content img {
-      width: 100%;
-      margin-top: 10px;
-      border-radius: 6px;
-    }
-    .popup-content button.close-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: transparent;
-      border: none;
-      font-size: 24px;
-      cursor: pointer;
-      color: #333;
-    }
-  </style>
+  .carrossel {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease;
+  }
+
+  .carrossel img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border-radius: 10px;
+  }
+
+  .carrossel img.selecionado {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    border: 3px solid #3498db;
+    z-index: 1;
+  }
+
+  .carrossel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 24px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    z-index: 10;
+    user-select: none;
+  }
+
+  .carrossel-btn.left { left: 10px; }
+  .carrossel-btn.right { right: 10px; }
+
+  .filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 0 20px 20px;
+  }
+
+  input, select, button {
+    padding: 8px;
+    font-size: 16px;
+  }
+
+  .galeria {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 0 20px 40px;
+  }
+
+  .filme-box {
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.2s;
+    cursor: default;
+  }
+
+  .filme-box:hover {
+    transform: translateY(-5px);
+  }
+
+  .filme-box img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+
+  .avaliacao {
+    font-weight: bold;
+    padding: 4px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  .verde { color: green; }
+  .laranja { color: orange; }
+  .vermelho { color: red; }
+
+  .btn-adicionar {
+    margin: 10px 20px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    transition: background-color 0.3s;
+  }
+
+  .btn-adicionar:hover {
+    background-color: #2980b9;
+  }
+
+  label {
+    display: block;
+    margin: 12px 0 5px;
+    font-weight: bold;
+  }
+
+  input[type=text], input[type=number], select, textarea {
+    width: 100%;
+    padding: 8px;
+    font-size: 15px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  /* Ocultar carrossel quando logado */
+  .carrossel-container.oculto {
+    display: none;
+  }
+
+  /* Paginas ocultas inicialmente */
+  #loginPage, #addMoviePage {
+    display: none;
+    padding: 20px;
+  }
+
+  /* Layout botões editar e excluir */
+  .filme-box button {
+    margin: 5px 8px 0 8px;
+    padding: 6px 14px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+    color: rgb(255, 255, 255);
+    transition: background-color 0.3s;
+    background-color:rgb(79, 170, 52) ;
+  }
+
+  .editar-filme {
+    background-color: #2980b9;
+  }
+
+  .editar-filme:hover {
+    background-color: #1c5d8b;
+  }
+
+  .excluir-filme {
+    background-color: #e74c3c;
+  }
+
+  .excluir-filme:hover {
+    background-color: #b93a2b;
+  }
+
+  /* Popup centralizado para detalhes e edição */
+  .popup {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  .popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    box-sizing: border-box;
+    position: relative;
+    max-height: 80vh;
+    overflow-y: auto;
+    margin: auto;
+  }
+
+  .popup-content img {
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 6px;
+  }
+
+  .popup-content button.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+  }
+</style>
+
 </head>
 <body>
 
@@ -340,10 +370,10 @@
 
 <script>
   let filmes = [
-    { nome: "Vingadores: Ultimato", genero: "Ação", avaliacao: 4.7, descricao: "Uma batalha épica dos heróis.", imagem: "https://ovicio.com.br/wp-content/uploads/2019/03/20190314-avengers-endgame-poster.jpg" },
-    { nome: "A Vida é Bela", genero: "Drama", avaliacao: 4.8, descricao: "Um emocionante drama familiar.", imagem: "https://upload.wikimedia.org/wikipedia/pt/thumb/8/8e/La_vita_%C3%A8_bella.jpg/220px-La_vita_%C3%A8_bella.jpg" },
-    { nome: "Deadpool", genero: "Comédia", avaliacao: 4.2, descricao: "Comédia irreverente e cheia de ação.", imagem: "https://upload.wikimedia.org/wikipedia/pt/0/09/Deadpool_poster.jpg" },
-    { nome: "Clube da Luta", genero: "Drama", avaliacao: 4.3, descricao: "Um olhar sombrio sobre a vida moderna.", imagem: "https://upload.wikimedia.org/wikipedia/pt/thumb/8/89/Clube_da_Luta_p%C3%B4ster.jpg/220px-Clube_da_Luta_p%C3%B4ster.jpg" }
+    { nome: "Vingadores: Ultimato", genero: "Ação", avaliacao: 4.7, descricao: "Em Vingadores: Ultimato, após Thanos eliminar metade das criaturas vivas em Vingadores: Guerra Infinita, os heróis precisam lidar com a dor da perda de amigos e seus entes queridos. Com Tony Stark (Robert Downey Jr.) vagando perdido no espaço sem água nem comida, o Capitão América/Steve Rogers (Chris Evans) e a Viúva Negra/Natasha Romanov (Scarlett Johansson) precisam liderar a resistência contra o titã louco.", imagem: "https://ovicio.com.br/wp-content/uploads/2019/03/20190314-avengers-endgame-poster.jpg" },
+    { nome: "A Vida é Bela", genero: "Drama", avaliacao: 4.8, descricao: "Durante a Segunda Guerra Mundial na Itália, o judeu Guido (Roberto Benigni) e seu filho Giosué são levados para um campo de concentração nazista. Afastado da mulher, ele tem que usar sua imaginação para fazer o menino acreditar que estão participando de uma grande brincadeira, com o intuito de protegê-lo do terror e da violência que os cercam.", imagem: "https://th.bing.com/th/id/OIP.kQSED0N0PB4WArGlap5cjgAAAA?w=184&h=264&c=7&r=0&o=7&pid=1.7&rm=3" },
+    { nome: "Deadpool", genero: "Comédia", avaliacao: 4.2, descricao: "Ex-militar e mercenário, Wade Wilson (Ryan Reynolds) é diagnosticado com câncer em estado terminal, porém encontra uma possibilidade de cura em uma sinistra experiência científica. Recuperado, com poderes e um incomum senso de humor, ele torna-se Deadpool e busca vingança contra o homem que destruiu sua vida.", imagem: "https://tse3.mm.bing.net/th/id/OIP.K9F8hQGdE2NorzmgagJ_kQHaLH?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" },
+    { nome: "Clube da Luta", genero: "Drama", avaliacao: 4.3, descricao: "Um homem deprimido que sofre de insônia conhece um estranho vendedor chamado Tyler Durden e se vê morando em uma casa suja depois que seu perfeito apartamento é destruído. A dupla forma um clube com regras rígidas onde homens lutam. A parceria perfeita é comprometida quando uma mulher, Marla, atrai a atenção de Tyler.", imagem: "https://tse3.mm.bing.net/th/id/OIP.ugyPz6Wv_QfE29HYZGuyNgHaK-?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" }
   ];
 
   let usuarioLogado = false;
@@ -648,4 +678,3 @@
 
 </body>
 </html>
-
