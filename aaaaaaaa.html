@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Galeria Senai</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <style>
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    overflow-x: hidden;
+  }
+
+  header {
+    background-color: #222;
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  nav a {
+    color: white;
+    margin-left: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .carrossel-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    height: 300px;
+    margin-bottom: 20px;
+  }
+
+  .carrossel {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease;
+  }
+
+  .carrossel img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border-radius: 10px;
+  }
+
+  .carrossel img.selecionado {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    border: 3px solid #3498db;
+    z-index: 1;
+  }
+
+  .carrossel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 24px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    z-index: 10;
+    user-select: none;
+  }
+
+  .carrossel-btn.left { left: 10px; }
+  .carrossel-btn.right { right: 10px; }
+
+  .filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 0 20px 20px;
+  }
+
+  input, select, button {
+    padding: 8px;
+    font-size: 16px;
+  }
+
+  .galeria {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 0 20px 40px;
+  }
+
+  .filme-box {
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.2s;
+    cursor: default;
+  }
+
+  .filme-box:hover {
+    transform: translateY(-5px);
+  }
+
+  .filme-box img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+
+  .avaliacao {
+    font-weight: bold;
+    padding: 4px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  .verde { color: green; }
+  .laranja { color: orange; }
+  .vermelho { color: red; }
+
+  .btn-adicionar {
+    margin: 10px 20px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    transition: background-color 0.3s;
+  }
+
+  .btn-adicionar:hover {
+    background-color: #2980b9;
+  }
+
+  label {
+    display: block;
+    margin: 12px 0 5px;
+    font-weight: bold;
+  }
+
+  input[type=text], input[type=number], select, textarea {
+    width: 100%;
+    padding: 8px;
+    font-size: 15px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  /* Ocultar carrossel quando logado */
+  .carrossel-container.oculto {
+    display: none;
+  }
+
+  /* Paginas ocultas inicialmente */
+  #loginPage, #addMoviePage {
+    display: none;
+    padding: 20px;
+  }
+
+  /* Layout botões editar e excluir */
+  .filme-box button {
+    margin: 5px 8px 0 8px;
+    padding: 6px 14px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+    color: rgb(255, 255, 255);
+    transition: background-color 0.3s;
+    background-color:rgb(79, 170, 52) ;
+  }
+
+  .editar-filme {
+    background-color: #2980b9;
+  }
+
+  .editar-filme:hover {
+    background-color: #1c5d8b;
+  }
+
+  .excluir-filme {
+    background-color: #e74c3c;
+  }
+
+  .excluir-filme:hover {
+    background-color: #b93a2b;
+  }
+
+  /* Popup centralizado para detalhes e edição */
+  .popup {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  .popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    box-sizing: border-box;
+    position: relative;
+    max-height: 80vh;
+    overflow-y: auto;
+    margin: auto;
+  }
+
+  .popup-content img {
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 6px;
+  }
+
+  .popup-content button.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+  }
+</style>
+
+</head>
+<body>
+
+<header>
+  <h1>Galeria Senai</h1>
+  <nav>
+    <a id="linkHome" style="display:none; cursor:pointer;">Home</a>
+    <a id="linkLogin">Login</a>
+    <a id="linkLogout" style="display:none; cursor:pointer;">Logout</a>
+  </nav>
+</header>
+
+<!-- HOME -->
+<div id="homePage">
+  <div class="carrossel-container" id="carrosselContainer">
+    <button class="carrossel-btn left">❮</button>
+    <div class="carrossel" id="carrossel"></div>
+    <button class="carrossel-btn right">❯</button>
+  </div>
+  
+
+  <div class="filtros">
+    <input type="text" id="pesquisa" placeholder="Pesquisar por nome..." />
+    <select id="genero">
+      <option value="">Todos os gêneros</option>
+      <option value="Ação">Ação</option>
+      <option value="Comédia">Comédia</option>
+      <option value="Drama">Drama</option>
+    </select>
+    <button id="filtrarBtn">Filtrar</button>
+    <button id="limparBtn">Limpar</button>
+  </div>
+
+  <div style="padding: 0 20px;">
+    <button id="btnAdicionarFilme" class="btn-adicionar" style="display:none;">Adicionar Filme</button>
+  </div>
+
+  <div class="galeria" id="galeria"></div>
+</div>
+
+<!-- LOGIN -->
+<div id="loginPage">
+  <h2>Login</h2>
+  <form id="formLogin" style="max-width:400px; margin:auto;">
+    <label for="usuarioLogin">Usuário:</label>
+    <input type="text" id="usuarioLogin" required />
+    <label for="senhaLogin">Senha:</label>
+    <input type="password" id="senhaLogin" required />
+    <button type="submit" class="btn-adicionar" style="margin-top: 15px;">Entrar</button>
+  </form>
+</div>
+
+<!-- ADICIONAR FILME -->
+<div id="addMoviePage">
+  <h2>Adicionar Filme</h2>
+  <form id="formAdicionarFilme" style="max-width:400px; margin:auto;">
+    <label for="nomeFilme">Nome:</label>
+    <input type="text" id="nomeFilme" required />
+
+    <label for="generoFilme">Gênero:</label>
+    <select id="generoFilme" required>
+      <option value="" disabled selected>Selecione o gênero</option>
+      <option value="Ação">Ação</option>
+      <option value="Comédia">Comédia</option>
+      <option value="Drama">Drama</option>
+    </select>
+
+    <label for="avaliacaoFilme">Avaliação (0 a 5):</label>
+    <input type="number" id="avaliacaoFilme" min="0" max="5" step="0.1" required />
+
+    <label for="descricaoFilme">Descrição:</label>
+    <textarea id="descricaoFilme" rows="3" required></textarea>
+
+    <label for="imagemFilme">URL da imagem:</label>
+    <input type="text" id="imagemFilme" required />
+
+    <button type="submit" class="btn-adicionar" style="margin-top:15px;">Adicionar</button>
+  </form>
+</div>
+
+<!-- POPUP DETALHES FILME -->
+<div class="popup" id="popupDetalhes">
+  <div class="popup-content">
+    <button class="close-btn">×</button>
+    <div id="detalhesConteudo"></div>
+  </div>
+</div>
+
+<!-- POPUP EDITAR FILME -->
+<div class="popup" id="popupEditar">
+  <div class="popup-content">
+    <button class="close-btn" id="fecharEditar">×</button>
+    <h2>Editar Filme</h2>
+    <form id="formEditarFilme">
+      <label for="editarNomeFilme">Nome:</label>
+      <input type="text" id="editarNomeFilme" required />
+
+      <label for="editarGeneroFilme">Gênero:</label>
+      <select id="editarGeneroFilme" required>
+        <option value="Ação">Ação</option>
+        <option value="Comédia">Comédia</option>
+        <option value="Drama">Drama</option>
+      </select>
+
+      <label for="editarAvaliacaoFilme">Avaliação (0 a 5):</label>
+      <input type="number" id="editarAvaliacaoFilme" min="0" max="5" step="0.1" required />
+
+      <label for="editarDescricaoFilme">Descrição:</label>
+      <textarea id="editarDescricaoFilme" rows="3" required></textarea>
+
+      <label for="editarImagemFilme">URL da imagem:</label>
+      <input type="text" id="editarImagemFilme" required />
+
+      <button type="submit" class="btn-adicionar" style="margin-top:15px;">Salvar</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  let filmes = [
+    { nome: "Vingadores: Ultimato", genero: "Ação", avaliacao: 4.7, descricao: "Em Vingadores: Ultimato, após Thanos eliminar metade das criaturas vivas em Vingadores: Guerra Infinita, os heróis precisam lidar com a dor da perda de amigos e seus entes queridos. Com Tony Stark (Robert Downey Jr.) vagando perdido no espaço sem água nem comida, o Capitão América/Steve Rogers (Chris Evans) e a Viúva Negra/Natasha Romanov (Scarlett Johansson) precisam liderar a resistência contra o titã louco.", imagem: "https://ovicio.com.br/wp-content/uploads/2019/03/20190314-avengers-endgame-poster.jpg" },
+    { nome: "A Vida é Bela", genero: "Drama", avaliacao: 4.8, descricao: "Durante a Segunda Guerra Mundial na Itália, o judeu Guido (Roberto Benigni) e seu filho Giosué são levados para um campo de concentração nazista. Afastado da mulher, ele tem que usar sua imaginação para fazer o menino acreditar que estão participando de uma grande brincadeira, com o intuito de protegê-lo do terror e da violência que os cercam.", imagem: "https://th.bing.com/th/id/OIP.kQSED0N0PB4WArGlap5cjgAAAA?w=184&h=264&c=7&r=0&o=7&pid=1.7&rm=3" },
+    { nome: "Deadpool", genero: "Comédia", avaliacao: 4.2, descricao: "Ex-militar e mercenário, Wade Wilson (Ryan Reynolds) é diagnosticado com câncer em estado terminal, porém encontra uma possibilidade de cura em uma sinistra experiência científica. Recuperado, com poderes e um incomum senso de humor, ele torna-se Deadpool e busca vingança contra o homem que destruiu sua vida.", imagem: "https://tse3.mm.bing.net/th/id/OIP.K9F8hQGdE2NorzmgagJ_kQHaLH?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" },
+    { nome: "Clube da Luta", genero: "Drama", avaliacao: 4.3, descricao: "Um homem deprimido que sofre de insônia conhece um estranho vendedor chamado Tyler Durden e se vê morando em uma casa suja depois que seu perfeito apartamento é destruído. A dupla forma um clube com regras rígidas onde homens lutam. A parceria perfeita é comprometida quando uma mulher, Marla, atrai a atenção de Tyler.", imagem: "https://tse3.mm.bing.net/th/id/OIP.ugyPz6Wv_QfE29HYZGuyNgHaK-?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" }
+  ];
+
+  let usuarioLogado = false;
+
+  // Carrega filmes do localStorage se existir
+  function carregarFilmesStorage() {
+    const filmesStorage = localStorage.getItem("filmes");
+    if (filmesStorage) {
+      filmes = JSON.parse(filmesStorage);
+    }
+  }
+
+  function salvarFilmesStorage() {
+    localStorage.setItem("filmes", JSON.stringify(filmes));
+  }
+
+  function corAvaliacao(av) {
+    if (av > 4) return "verde";
+    if (av > 2) return "laranja";
+    return "vermelho";
+  }
+
+  function mostrarFilmes(lista) {
+    $("#galeria").empty();
+    lista.forEach((f, index) => {
+      let botoes;
+      if (usuarioLogado) {
+        botoes = `
+          <button class="editar-filme" data-index="${index}">Editar</button>
+          <button class="excluir-filme" data-index="${index}">Excluir</button>
+        `;
+      } else {
+        botoes = `<button class="ver-detalhes" data-nome="${f.nome}">Ver Detalhes</button>`;
+      }
+      $("#galeria").append(`
+        <div class="filme-box">
+          <img src="${f.imagem}" alt="${f.nome}">
+          <h3>${f.nome}</h3>
+          <p><strong>Gênero:</strong> ${f.genero}</p>
+          <p><strong>Avaliação:</strong> <span class="avaliacao ${corAvaliacao(f.avaliacao)}">${f.avaliacao.toFixed(1)}</span></p>
+          ${botoes}
+        </div>
+      `);
+    });
+  }
+
+  let indiceCarrossel = 0;
+
+  function carregarCarrossel() {
+    $("#carrossel").empty();
+    filmes.slice(-5).forEach(f => {
+      const img = $(`<img src="${f.imagem}" alt="${f.nome}" data-nome="${f.nome}">`);
+      $("#carrossel").append(img);
+    });
+    atualizarSlide();
+  }
+  
+  function atualizarSlide() {
+    const total = $("#carrossel img").length;
+    if (indiceCarrossel < 0) indiceCarrossel = total - 1;
+    if (indiceCarrossel >= total) indiceCarrossel = 0;
+    const largura = $("#carrosselContainer").width();
+    $("#carrossel").css("transform", `translateX(-${indiceCarrossel * largura}px)`);
+  }
+  
+  
+
+  function mostrarTelaHome() {
+    $("#homePage").show();
+    $("#loginPage").hide();
+    $("#addMoviePage").hide();
+
+    if(usuarioLogado) {
+      $("#carrosselContainer").addClass("oculto");
+      $("#btnAdicionarFilme").show();
+      $("#linkLogin").hide();
+      $("#linkLogout").show();
+      $("#linkHome").hide();
+    } else {
+      $("#carrosselContainer").removeClass("oculto");
+      $("#btnAdicionarFilme").hide();
+      $("#linkLogin").show();
+      $("#linkLogout").hide();
+      $("#linkHome").hide();
+    }
+    mostrarFilmes(filmes);
+    carregarCarrossel();
+  }
+
+  function mostrarTelaLogin() {
+    $("#homePage").hide();
+    $("#loginPage").show();
+    $("#addMoviePage").hide();
+    $("#linkHome").show();
+    $("#linkLogin").hide();
+    $("#linkLogout").hide();
+  }
+
+  function mostrarTelaAddFilme() {
+    $("#homePage").hide();
+    $("#loginPage").hide();
+    $("#addMoviePage").show();
+    $("#linkHome").show();
+    $("#linkLogin").hide();
+    $("#linkLogout").hide();
+  }
+
+  $(document).ready(function () {
+    carregarFilmesStorage();
+    mostrarTelaHome();
+    $(document).on("click", "#carrossel img", function () {
+      const nome = $(this).data("nome");
+      const f = filmes.find(f => f.nome === nome);
+      if(f) {
+        $("#detalhesConteudo").html(`
+          <h2>${f.nome}</h2>
+          <p><strong>Gênero:</strong> ${f.genero}</p>
+          <p><strong>Avaliação:</strong> ${f.avaliacao.toFixed(1)}</p>
+          <p><strong>Descrição:</strong> ${f.descricao}</p>
+          <img src="${f.imagem}" alt="${f.nome}" />
+        `);
+        $("#popupDetalhes").fadeIn();
+      }
+    });
+    
+
+    // Scroll carrossel
+    $(".carrossel-btn.left").click(() => {
+      indiceCarrossel--;
+      atualizarSlide();
+    });
+    $(".carrossel-btn.right").click(() => {
+      indiceCarrossel++;
+      atualizarSlide();
+    });
+    
+
+    // Filtrar filmes
+    $("#filtrarBtn").click(() => {
+      const termo = $("#pesquisa").val().toLowerCase();
+      const genero = $("#genero").val();
+      const filtrados = filmes.filter(f =>
+        f.nome.toLowerCase().includes(termo) &&
+        (genero === "" || f.genero === genero)
+      );
+      mostrarFilmes(filtrados);
+    });
+
+    // Limpar filtros
+    $("#limparBtn").click(() => {
+      $("#pesquisa").val("");
+      $("#genero").val("");
+      mostrarFilmes(filmes);
+    });
+
+    // Filtrar em tempo real ao digitar
+    $("#pesquisa").on("input", () => {
+      $("#filtrarBtn").click();
+    });
+
+    // Ver detalhes do filme (popup)
+    $(document).on("click", ".ver-detalhes", function () {
+      const nome = $(this).data("nome");
+      const f = filmes.find(f => f.nome === nome);
+      if(f) {
+        $("#detalhesConteudo").html(`
+          <h2>${f.nome}</h2>
+          <p><strong>Gênero:</strong> ${f.genero}</p>
+          <p><strong>Avaliação:</strong> ${f.avaliacao.toFixed(1)}</p>
+          <p><strong>Descrição:</strong> ${f.descricao}</p>
+          <img src="${f.imagem}" alt="${f.nome}" />
+        `);
+        $("#popupDetalhes").fadeIn();
+      }
+    });
+
+    // Fechar popup detalhes
+    $("#popupDetalhes .close-btn").click(() => {
+      $("#popupDetalhes").fadeOut();
+    });
+
+    // Botão Login
+    $("#linkLogin").click(() => {
+      mostrarTelaLogin();
+    });
+
+    // Botão Logout
+    $("#linkLogout").click(() => {
+      usuarioLogado = false;
+      localStorage.removeItem("usuarioLogado");
+      mostrarTelaHome();
+    });
+
+    // Botão Home
+    $("#linkHome").click(() => {
+      mostrarTelaHome();
+    });
+
+    // Login (simples)
+    $("#formLogin").submit(function (e) {
+      e.preventDefault();
+      const usuario = $("#usuarioLogin").val().trim();
+      const senha = $("#senhaLogin").val().trim();
+
+      // Simples validação fixa para exemplo
+      if (usuario === "admin" && senha === "1234") {
+        usuarioLogado = true;
+        localStorage.setItem("usuarioLogado", "true");
+        mostrarTelaHome();
+        alert("Login realizado com sucesso!");
+      } else {
+        alert("Usuário ou senha incorretos.");
+      }
+    });
+
+    // Checar se usuário estava logado (localStorage)
+    if(localStorage.getItem("usuarioLogado") === "true") {
+      usuarioLogado = true;
+      mostrarTelaHome();
+    }
+
+    // Botão para abrir tela adicionar filme
+    $("#btnAdicionarFilme").click(() => {
+      mostrarTelaAddFilme();
+    });
+
+    // Adicionar filme
+    $("#formAdicionarFilme").submit(function (e) {
+      e.preventDefault();
+
+      const novoFilme = {
+        nome: $("#nomeFilme").val().trim(),
+        genero: $("#generoFilme").val(),
+        avaliacao: parseFloat($("#avaliacaoFilme").val()),
+        descricao: $("#descricaoFilme").val().trim(),
+        imagem: $("#imagemFilme").val().trim()
+      };
+
+      filmes.push(novoFilme);
+      salvarFilmesStorage();
+
+      // Limpar form
+      this.reset();
+
+      alert("Filme adicionado!");
+      mostrarTelaHome();
+    });
+
+    // Excluir filme
+    $(document).on("click", ".excluir-filme", function() {
+      const idx = $(this).data("index");
+      if (confirm(`Tem certeza que deseja excluir o filme "${filmes[idx].nome}"?`)) {
+        filmes.splice(idx, 1);
+        salvarFilmesStorage();
+        mostrarFilmes(filmes);
+        carregarCarrossel();
+      }
+    });
+
+    // Editar filme - abrir popup com dados
+    $(document).on("click", ".editar-filme", function() {
+      const idx = $(this).data("index");
+      const f = filmes[idx];
+      if (!f) return;
+
+      $("#formEditarFilme").data("index", idx);
+      $("#editarNomeFilme").val(f.nome);
+      $("#editarGeneroFilme").val(f.genero);
+      $("#editarAvaliacaoFilme").val(f.avaliacao);
+      $("#editarDescricaoFilme").val(f.descricao);
+      $("#editarImagemFilme").val(f.imagem);
+
+      $("#popupEditar").fadeIn();
+    });
+
+    // Fechar popup editar
+    $("#fecharEditar").click(() => {
+      $("#popupEditar").fadeOut();
+    });
+
+    // Salvar edição filme
+    $("#formEditarFilme").submit(function(e) {
+      e.preventDefault();
+      const idx = $(this).data("index");
+      if (idx === undefined) return;
+
+      filmes[idx] = {
+        nome: $("#editarNomeFilme").val().trim(),
+        genero: $("#editarGeneroFilme").val(),
+        avaliacao: parseFloat($("#editarAvaliacaoFilme").val()),
+        descricao: $("#editarDescricaoFilme").val().trim(),
+        imagem: $("#editarImagemFilme").val().trim()
+      };
+
+      salvarFilmesStorage();
+      mostrarFilmes(filmes);
+      carregarCarrossel();
+      $("#popupEditar").fadeOut();
+    });
+  });
+</script>
+
+</body>
+</html>
